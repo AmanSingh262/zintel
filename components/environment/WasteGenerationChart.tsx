@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import budgetApi from "@/lib/budget-api";
 
 interface WasteData {
     category: string;
@@ -37,7 +38,7 @@ export function WasteGenerationChart() {
 
     const fetchData = async (isMounted: boolean = true) => {
         try {
-            const response = await fetch("http://localhost:8002/environment/waste-generation");
+            const response = await fetch(budgetApi.environmentWasteGeneration());
             const result = await response.json();
             if (!isMounted) return;
             

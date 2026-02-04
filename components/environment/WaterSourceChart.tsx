@@ -12,6 +12,7 @@ import {
     Cell,
     Legend
 } from "recharts";
+import budgetApi from "@/lib/budget-api";
 
 interface WaterSource {
     source: string;
@@ -46,7 +47,7 @@ export function WaterSourceChart() {
 
     const fetchData = async (isMounted: boolean = true) => {
         try {
-            const response = await fetch("http://localhost:8002/environment/water-usage");
+            const response = await fetch(budgetApi.environmentWaterUsage());
             const result = await response.json();
             if (!isMounted) return;
             

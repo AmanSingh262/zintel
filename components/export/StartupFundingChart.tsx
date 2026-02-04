@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ZAxis, Cell, LabelList } from "recharts";
-
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ZAxis, Cell, LabelList } from "recharts";import budgetApi from "@/lib/budget-api";
 interface FundingData {
     category: string;
     count: number;
@@ -46,7 +45,7 @@ export function StartupFundingChart() {
 
     const fetchData = async () => {
         try {
-            const response = await fetch("http://localhost:8002/export/startup-funding");
+            const response = await fetch(budgetApi.exportStartupFunding());
             const result = await response.json();
             if (result.data) {
                 setData(result.data);

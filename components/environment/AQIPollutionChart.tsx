@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import budgetApi from "@/lib/budget-api";
 
 interface AQIData {
     day: string;
@@ -52,7 +53,7 @@ export function AQIPollutionChart({ city = "Delhi" }: AQIPollutionChartProps) {
 
     const fetchData = async (isMounted: boolean = true) => {
         try {
-            const response = await fetch(`http://localhost:8002/environment/aqi-pollution`);
+            const response = await fetch(budgetApi.environmentAqiPollution());
             const result = await response.json();
             if (!isMounted) return;
             

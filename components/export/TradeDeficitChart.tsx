@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Area, ComposedChart } from "recharts";
+import budgetApi from "@/lib/budget-api";
 
 interface TradeData {
     year: string;
@@ -28,7 +29,7 @@ export function TradeDeficitChart() {
 
     const fetchData = async () => {
         try {
-            const response = await fetch("http://localhost:8002/export/trade-balance");
+            const response = await fetch(budgetApi.exportTradeBalance());
             const result = await response.json();
             if (result.data) {
                 setData(result.data);

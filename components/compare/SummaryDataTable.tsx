@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import budgetApi from "@/lib/budget-api";
 
 interface SummaryData {
     country: string;
@@ -33,7 +34,7 @@ export function SummaryDataTable({ countries, indicator, yearRange }: {
                 
                 abortControllerRef.current = new AbortController();
                 setLoading(true);
-                const response = await fetch('http://localhost:8002/compare/summary', {
+                const response = await fetch(budgetApi.compareSummary({ states: '', year: 2024 }), {
                     signal: abortControllerRef.current.signal
                 });
                 if (!response.ok) {

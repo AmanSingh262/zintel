@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import budgetApi from "@/lib/budget-api";
 
 interface ContributionData {
     category: string;
@@ -53,7 +54,7 @@ export function GeekContributionChart() {
 
     const fetchData = async () => {
         try {
-            const response = await fetch("http://localhost:8002/salary/geek-worker-contribution");
+            const response = await fetch(budgetApi.salaryGeekWorkerContribution());
             if (!response.ok) throw new Error("Failed to fetch data");
             const result = await response.json();
             setData(result.data);

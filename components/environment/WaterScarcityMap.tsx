@@ -84,7 +84,7 @@ export function WaterScarcityMap() {
 
     const fetchData = async (isMounted: boolean = true) => {
         try {
-            const response = await fetch("http://localhost:8002/environment/water-scarcity");
+            const response = await fetch(budgetApi.environmentWaterScarcity());
             const result = await response.json();
             if (!isMounted) return;
             

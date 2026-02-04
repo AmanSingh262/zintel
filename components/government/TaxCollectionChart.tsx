@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";import budgetApi from "@/lib/budget-api";
 const FALLBACK_DATA = [
     { state: "Maharashtra", value: 545, color: "#8b5cf6" },
     { state: "Uttar Pradesh", value: 325, color: "#3b82f6" },
@@ -58,7 +57,7 @@ export function TaxCollectionChart() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch("http://localhost:8002/revenue/state-gst");
+                const response = await fetch(budgetApi.revenueStateGst());
                 if (!response.ok) throw new Error("Failed to fetch tax data");
                 const result = await response.json();
                 if (result.data && Array.isArray(result.data)) {

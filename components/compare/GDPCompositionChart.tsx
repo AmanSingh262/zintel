@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import budgetApi from "@/lib/budget-api";
 
 interface GDPData {
     sector: string;
@@ -34,7 +35,7 @@ export function GDPCompositionChart({ countries }: { countries: string[] }) {
                     
                     abortControllerRef.current = new AbortController();
                     setLoading(true);
-                    const response = await fetch('http://localhost:8002/compare/gdp-composition', {
+                    const response = await fetch(budgetApi.compareGdpComposition(), {
                         signal: abortControllerRef.current.signal
                     });
                     if (!response.ok) {

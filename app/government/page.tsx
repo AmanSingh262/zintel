@@ -7,6 +7,7 @@ import { TaxCollectionChart } from "@/components/government/TaxCollectionChart";
 import { RevenueExpenditureChart } from "@/components/government/RevenueExpenditureChart";
 import { WelfareSpendingChart } from "@/components/government/WelfareSpendingChart";
 import { CentralStateToggle } from "@/components/ui/CentralStateToggle";
+import budgetApi from "@/lib/budget-api";
 
 // All Indian States and Union Territories
 const ALL_STATES = [
@@ -93,14 +94,14 @@ export default function GovernmentPage() {
         const fetchBudgetData = async () => {
             setIsLoading(true);
             try {
-                // Fetch from Python Government & Finance server on port 8002 with year parameter
+                // Fetch from Python Government & Finance server with year parameter
                 const [budgetOverview, ministries, revenue, states, economicIndicators, sectors] = await Promise.all([
-                    fetch(`http://localhost:8002/budget/overview?year=${selectedYear}`).then(r => r.json()),
-                    fetch(`http://localhost:8002/budget/ministries?year=${selectedYear}`).then(r => r.json()),
-                    fetch(`http://localhost:8002/revenue/summary?year=${selectedYear}`).then(r => r.json()),
-                    fetch(`http://localhost:8002/states/budgets?year=${selectedYear}`).then(r => r.json()),
-                    fetch('http://localhost:8002/economy/indicators').then(r => r.json()),
-                    fetch('http://localhost:8002/budget/states-sectors').then(r => r.json().catch(() => ({ data: [] })))
+                    fetch(budgetApi.budgetOverview(selectedYear)).then(r => r.json()),
+                    fetch(budgetApi.budgetMinistries(selectedYear)).then(r => r.json()),
+                    fetch(budgetApi.revenueSummary(selectedYear)).then(r => r.json()),
+                    fetch(budgetApi.statesBudgets(selectedYear)).then(r => r.json()),
+                    fetch(budgetApi.economyIndicators()).then(r => r.json()),
+                    fetch(budgetApi.budgetStatesSectors()).then(r => r.json().catch(() => ({ data: [] })))
                 ]);
 
                 if (sectors && sectors.data) {
@@ -144,7 +145,7 @@ export default function GovernmentPage() {
                 // Fetch individual state data if a specific state is selected
                 if (selectedState !== "All States") {
                     try {
-                        const stateData = await fetch(`http://localhost:8002/states/${selectedState.replace(/ /g, '-')}?year=${selectedYear}`).then(r => r.json());
+                        const stateData = await fetch(budgetApi.stateData(selectedState, selectedYear)).then(r => r.json());
                         
                         // Use sector allocation if available (Creative Feature), else fallback to total
                         if (stateData.sector_allocation && stateData.sector_allocation.length > 0) {

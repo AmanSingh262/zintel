@@ -18,7 +18,7 @@ export function RevenueExpenditureChart() {
     useEffect(() => {
         async function fetchTrendData() {
             try {
-                const response = await fetch("http://localhost:8002/budget/trend");
+                const response = await fetch(budgetApi.budgetTrend());
                 if (!response.ok) throw new Error("Failed to fetch trend");
                 const result = await response.json();
                 

@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";import budgetApi from "@/lib/budget-api";
 interface PopulationData {
     year: string;
     [country: string]: number | string;
@@ -25,7 +24,7 @@ export function PopulationTrendChart({ countries }: { countries: string[] }) {
                 
                 abortControllerRef.current = new AbortController();
                 setLoading(true);
-                const response = await fetch('http://localhost:8002/compare/population', {
+                const response = await fetch(budgetApi.comparePopulation({ states: '', year: 2024 }), {
                     signal: abortControllerRef.current.signal
                 });
                 if (!response.ok) {

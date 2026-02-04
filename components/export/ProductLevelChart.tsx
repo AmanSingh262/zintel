@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from "recharts";
+import budgetApi from "@/lib/budget-api";
 
 interface ProductData {
     category: string;
@@ -28,7 +29,7 @@ export function ProductLevelChart() {
 
     const fetchData = async () => {
         try {
-            const response = await fetch("http://localhost:8002/export/product-level");
+            const response = await fetch(budgetApi.exportProductLevel());
             const result = await response.json();
             if (result.data) {
                 setData(result.data);

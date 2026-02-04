@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from "recharts";
-
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from "recharts";import budgetApi from "@/lib/budget-api";
 const FALLBACK_DATA = [
     { name: "Food Security", allocated: 205, spent: 195, color: "#10b981" },
     { name: "Fertilizer Subsidy", allocated: 164, spent: 175, color: "#f59e0b" },
@@ -40,7 +39,7 @@ export function WelfareSpendingChart() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch("http://localhost:8002/budget/welfare");
+                const response = await fetch(budgetApi.budgetWelfare());
                 if (!response.ok) throw new Error("Failed to fetch welfare data");
                 const result = await response.json();
                 

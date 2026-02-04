@@ -5,6 +5,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { CentralStateToggle } from "@/components/ui/CentralStateToggle";
 import { Download } from "lucide-react";
 import dynamic from "next/dynamic";
+import budgetApi from "@/lib/budget-api";
 
 // Dynamically import charts with SSR disabled to prevent hydration errors
 const IncomeBarChart = dynamic(
@@ -71,13 +72,13 @@ export default function CitizenEconomyDashboard() {
                     startupRes, 
                     povertyRes
                 ] = await Promise.all([
-                    fetch("http://localhost:8002/economy/stats").then(r => r.json()),
-                    fetch("http://localhost:8002/economy/income/trend").then(r => r.json()),
-                    fetch("http://localhost:8002/economy/income/states").then(r => r.json()),
-                    fetch("http://localhost:8002/economy/income/distribution").then(r => r.json()),
-                    fetch("http://localhost:8002/economy/trade/balance").then(r => r.json()),
-                    fetch("http://localhost:8002/economy/startups").then(r => r.json()),
-                    fetch("http://localhost:8002/economy/poverty").then(r => r.json()),
+                    fetch(budgetApi.economyStats()).then(r => r.json()),
+                    fetch(budgetApi.economyIncomeTrend()).then(r => r.json()),
+                    fetch(budgetApi.economyIncomeStates()).then(r => r.json()),
+                    fetch(budgetApi.economyIncomeDistribution()).then(r => r.json()),
+                    fetch(budgetApi.economyTradeBalance()).then(r => r.json()),
+                    fetch(budgetApi.economyStartups()).then(r => r.json()),
+                    fetch(budgetApi.economyPoverty()).then(r => r.json()),
                 ]);
 
                 if (statsRes.stats) setStats(statsRes.stats);

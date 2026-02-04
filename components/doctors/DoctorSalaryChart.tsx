@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Cell } from "recharts";
+import budgetApi from "@/lib/budget-api";
 
 interface SalaryData {
     state: string;
@@ -61,7 +62,7 @@ export function DoctorSalaryChart() {
 
     const fetchData = async () => {
         try {
-            const response = await fetch("http://localhost:8002/salary/sector-wise-by-state");
+            const response = await fetch(budgetApi.salarySectorWiseByState());
             if (!response.ok) throw new Error("Failed to fetch data");
             const result = await response.json();
             console.log("API Response:", result);

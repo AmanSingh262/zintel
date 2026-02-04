@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";import budgetApi from "@/lib/budget-api";
 interface GDPComparisonData {
     year: string;
     [country: string]: number | string;
@@ -35,7 +34,7 @@ export function MainComparisonChart({
                 setLoading(true);
                 
                 // Fetch from backend API
-                const response = await fetch(`http://localhost:8002/compare/gdp`, {
+                const response = await fetch(budgetApi.compareGdp(), {
                     signal: abortControllerRef.current.signal
                 });
                 if (!response.ok) {

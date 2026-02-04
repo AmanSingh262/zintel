@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, Sector } from "recharts";
+import budgetApi from "@/lib/budget-api";
 
 interface MSMEData {
     name: string;
@@ -37,7 +38,7 @@ export function MSMEContributionChart() {
 
     const fetchData = async () => {
         try {
-            const response = await fetch("http://localhost:8002/export/msme-contribution");
+            const response = await fetch(budgetApi.exportMsmeContribution());
             const result = await response.json();
             if (result.distribution) {
                 setData(result.distribution);
