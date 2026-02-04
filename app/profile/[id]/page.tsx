@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { PrismaClient } from "@prisma/client";
 import { ProfileClient } from "./ProfileClient";
+import type { ProfileData } from "./ProfileClient";
 
 const prisma = new PrismaClient();
 
@@ -44,15 +45,15 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
     }
 
     // Transform data for client component
-    const profileData = {
+    const profileData: ProfileData = {
         id: user.id,
         name: user.name || "Unknown User",
         email: user.email,
-        image: user.image,
-        bio: user.bio,
-        banner_url: user.banner_url,
-        location: user.location,
-        website: user.website,
+        image: user.image || undefined,
+        bio: user.bio || undefined,
+        banner_url: user.banner_url || undefined,
+        location: user.location || undefined,
+        website: user.website || undefined,
         verificationLevel: user.verificationLevel,
         truthIdVerified: user.truthIdVerified,
         createdAt: user.createdAt.toISOString(),
@@ -65,7 +66,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             id: post.id,
             content: post.content,
             postType: post.postType,
-            imageUrl: post.imageUrl,
+            imageUrl: post.imageUrl || undefined,
             hashtags: post.hashtags,
             createdAt: post.createdAt.toISOString(),
             likes: post._count.likes,

@@ -7,7 +7,7 @@ import { VerificationBadge } from "@/components/social/VerificationBadge";
 import { PostComposer } from "@/components/social/PostComposer";
 import { PostCard } from "@/components/social/PostCard";
 
-interface ProfileData {
+export interface ProfileData {
     id: string;
     name: string;
     email: string;
