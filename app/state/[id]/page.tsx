@@ -82,24 +82,24 @@ export default function StatePage() {
 
     // Get population - use static metadata (API data will be used when available)
     const getPopulation = () => {
-        if (loading) return state.population;
+        if (loading) return state?.population || 0;
         
         const apiPop = getIndicatorValue('population');
         if (apiPop !== 'N/A' && typeof apiPop === 'number' && apiPop > 0) {
             return apiPop / 10000000; // Convert to crores
         }
-        return state.population; // Use static metadata
+        return state?.population || 0; // Use static metadata
     };
 
     // Get literacy - use static metadata (API data will be used when available)
     const getLiteracy = () => {
-        if (loading) return state.literacy;
+        if (loading) return state?.literacy || 0;
         
         const apiLit = getIndicatorValue('literacy');
         if (apiLit !== 'N/A' && typeof apiLit === 'number' && apiLit > 0) {
             return apiLit;
         }
-        return state.literacy; // Use static metadata
+        return state?.literacy || 0; // Use static metadata
     };
 
     if (!state) {
@@ -129,10 +129,10 @@ export default function StatePage() {
                         </Link>
                     </div>
                     <h1 className="text-4xl font-black text-gray-900 mb-2">
-                        {state.name}
+                        {state?.name || 'Unknown'}
                     </h1>
                     <p className="text-lg text-gray-600">
-                        Capital: {state.capital}
+                        Capital: {state?.capital || 'Unknown'}
                     </p>
                 </div>
 
@@ -143,7 +143,7 @@ export default function StatePage() {
                         style={{ borderColor: ZINTEL_COLORS.primary.purple }}>
                         <div className="text-sm text-gray-600 mb-2">Gross Domestic Product</div>
                         <div className="text-3xl font-bold mb-1" style={{ color: ZINTEL_COLORS.primary.purple }}>
-                            ₹{state.gdp.toLocaleString('en-IN')} Cr
+                            ₹{(state?.gdp || 0).toLocaleString('en-IN')} Cr
                         </div>
                         <div className="text-xs text-gray-500">Annual GDP</div>
                     </div>
@@ -171,7 +171,7 @@ export default function StatePage() {
                     <div className="bg-white rounded-xl p-6 shadow-lg border-2 border-orange-500 hover:shadow-xl transition-shadow">
                         <div className="text-sm text-gray-600 mb-2">Total Area</div>
                         <div className="text-3xl font-bold text-orange-600 mb-1">
-                            {state.area.toLocaleString('en-IN')}
+                            {(state?.area || 0).toLocaleString('en-IN')}
                         </div>
                         <div className="text-xs text-gray-500">Square Kilometers</div>
                     </div>
@@ -185,12 +185,12 @@ export default function StatePage() {
                         <div className="space-y-4">
                             <div className="flex justify-between items-center pb-3 border-b border-gray-200">
                                 <span className="text-gray-700">GDP (Crores)</span>
-                                <span className="font-bold text-gray-900">₹{state.gdp.toLocaleString('en-IN')} Cr</span>
+                                <span className="font-bold text-gray-900">₹{(state?.gdp || 0).toLocaleString('en-IN')} Cr</span>
                             </div>
                             <div className="flex justify-between items-center pb-3 border-b border-gray-200">
                                 <span className="text-gray-700">Per Capita Income</span>
                                 <span className="font-bold text-gray-900">
-                                    {formatIndianCurrency((state.gdp * 10000000) / (state.population * 10000000))}
+                                    {formatIndianCurrency(((state?.gdp || 0) * 10000000) / ((state?.population || 1) * 10000000))}
                                 </span>
                             </div>
                             <div className="flex justify-between items-center">
@@ -219,7 +219,7 @@ export default function StatePage() {
                             <div className="flex justify-between items-center">
                                 <span className="text-gray-700">Population Density</span>
                                 <span className="font-bold text-gray-900">
-                                    {Math.round((getPopulation() * 10000000) / state.area).toLocaleString('en-IN')} /km²
+                                    {Math.round((getPopulation() * 10000000) / (state?.area || 1)).toLocaleString('en-IN')} /km²
                                 </span>
                             </div>
                         </div>
