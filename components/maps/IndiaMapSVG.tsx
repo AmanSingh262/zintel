@@ -122,9 +122,17 @@ export function IndiaMapSVG({ layer = 'default' }: IndiaMapSVGProps) {
         return hoveredState === stateId ? 'rgba(99, 102, 241, 0.6)' : 'rgba(99, 102, 241, 0.3)';
     };
 
-    const handleStateHover = (stateId: string, e: React.MouseEvent) => {
+    const handleStateHover = (stateId: string) => (e: React.MouseEvent) => {
         setHoveredState(stateId);
         setTooltipPos({ x: e.clientX, y: e.clientY });
+    };
+
+    const handleStateLeave = () => {
+        setHoveredState(null);
+    };
+
+    const handleStateClick = (stateId: string) => () => {
+        router.push(`/state/${stateId}`);
     };
 
     return (
