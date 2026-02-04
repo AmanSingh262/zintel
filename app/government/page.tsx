@@ -434,7 +434,7 @@ export default function GovernmentPage() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {unionBudgetMinistries.map((ministry, index) => (
+                                    {unionBudgetMinistries.map((ministry: any, index: number) => (
                                         <tr key={index} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                                             <td className="py-3 px-4 font-semibold text-gray-600">{index + 1}</td>
                                             <td className="py-3 px-4">
