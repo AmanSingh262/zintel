@@ -1,0 +1,54 @@
+services:
+  # Next.js Frontend
+  - type: web
+    name: zintel-frontend
+    env: node
+    region: singapore
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXTAUTH_URL
+        sync: false
+      - key: NEXTAUTH_SECRET
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+      - key: DATA_GOV_API_KEY
+        sync: false
+      - key: LLM_BACKEND_URL
+        value: https://zintel-llm-backend.onrender.com
+      - key: GOV_FINANCE_BACKEND_URL
+        value: https://zintel-gov-finance.onrender.com
+
+  # LLM Backend API (Python)
+  - type: web
+    name: zintel-llm-backend
+    env: python
+    region: singapore
+    plan: free
+    buildCommand: cd "llm model" && pip install -r requirements.txt
+    startCommand: cd "llm model/backend" && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+
+  # Government Finance API (Python)
+  - type: web
+    name: zintel-gov-finance
+    env: python
+    region: singapore
+    plan: free
+    buildCommand: pip install fastapi uvicorn requests python-dateutil
+    startCommand: uvicorn government_finance_server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
