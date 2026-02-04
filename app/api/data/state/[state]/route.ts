@@ -10,10 +10,11 @@ const prisma = new PrismaClient();
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { state: string } }
+    { params }: { params: Promise<{ state: string }> }
 ) {
     try {
-        const stateName = decodeURIComponent(params.state);
+        const { state } = await params;
+        const stateName = decodeURIComponent(state);
         const { searchParams } = new URL(request.url);
         const category = searchParams.get('category');
 
