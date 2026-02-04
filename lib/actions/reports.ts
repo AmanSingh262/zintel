@@ -112,7 +112,7 @@ export async function submitReport(data: {
         const spamScore = aiSpamPreScan(data.description);
 
         // Get IP and user agent for audit log
-        const headersList = headers();
+        const headersList = await headers();
         const ipAddress = headersList.get("x-forwarded-for") || headersList.get("x-real-ip");
         const userAgent = headersList.get("user-agent");
 
