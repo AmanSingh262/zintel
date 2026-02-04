@@ -138,7 +138,7 @@ export default function GovernmentPage() {
                             population: s.population_crore,
                             gdpGrowth: s.gdp_growth_rate
                         })),
-                        byState: {}
+                        byState: {} as Record<string, any[]>
                     },
                     economicIndicators: economicIndicators.indicators
                 };
