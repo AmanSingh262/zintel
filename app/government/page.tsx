@@ -94,12 +94,13 @@ export default function GovernmentPage() {
         const fetchBudgetData = async () => {
             setIsLoading(true);
             try {
+                const year = parseInt(selectedYear);
                 // Fetch from Python Government & Finance server with year parameter
                 const [budgetOverview, ministries, revenue, states, economicIndicators, sectors] = await Promise.all([
-                    fetch(budgetApi.budgetOverview(selectedYear)).then(r => r.json()),
-                    fetch(budgetApi.budgetMinistries(selectedYear)).then(r => r.json()),
-                    fetch(budgetApi.revenueSummary(selectedYear)).then(r => r.json()),
-                    fetch(budgetApi.statesBudgets(selectedYear)).then(r => r.json()),
+                    fetch(budgetApi.budgetOverview(year)).then(r => r.json()),
+                    fetch(budgetApi.budgetMinistries(year)).then(r => r.json()),
+                    fetch(budgetApi.revenueSummary(year)).then(r => r.json()),
+                    fetch(budgetApi.statesBudgets(year)).then(r => r.json()),
                     fetch(budgetApi.economyIndicators()).then(r => r.json()),
                     fetch(budgetApi.budgetStatesSectors()).then(r => r.json().catch(() => ({ data: [] })))
                 ]);
@@ -145,7 +146,8 @@ export default function GovernmentPage() {
                 // Fetch individual state data if a specific state is selected
                 if (selectedState !== "All States") {
                     try {
-                        const stateData = await fetch(budgetApi.stateData(selectedState, selectedYear)).then(r => r.json());
+                        const year = parseInt(selectedYear);
+                        const stateData = await fetch(budgetApi.stateData(selectedState, year)).then(r => r.json());
                         
                         // Use sector allocation if available (Creative Feature), else fallback to total
                         if (stateData.sector_allocation && stateData.sector_allocation.length > 0) {
