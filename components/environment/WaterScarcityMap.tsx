@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import india from "@svg-maps/india";
+import budgetApi from "@/lib/budget-api";
 
 interface WaterIndexData {
     state: string;

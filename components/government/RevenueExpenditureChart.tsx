@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import budgetApi from "@/lib/budget-api";
 
 const FALLBACK_DATA = [
     { year: "2022", revenue: 41.87, expenditure: 44.5 },
