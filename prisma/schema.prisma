@@ -1,0 +1,469 @@
+// Zintel Prisma Schema - PostgreSQL (Supabase)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ========================================
+// CORE USER & AUTHENTICATION MODELS
+// ========================================
+
+model User {
+  id                String    @id @default(cuid())
+  auth_user_id      String?   @unique // Supabase Auth UUID
+  email             String    @unique
+  password          String?
+  name              String?
+  image             String?
+  bio               String?
+  banner_url        String?   // X-style banner image
+  location          String?   // User location
+  website           String?   // Personal website URL
+  
+  // Authentication
+  googleId          String?   @unique
+  phone             String?
+  emailVerified     Boolean   @default(false)
+  phoneVerified     Boolean   @default(false)
+  verificationToken String?
+  resetToken        String?
+  resetTokenExpiry  DateTime?
+  
+  // Truth ID Verification
+  truthIdVerified   Boolean   @default(false)
+  truthIdLastFour   String?
+  verificationLevel Int       @default(0)
+  
+  // User Role & Moderation
+  role              String    @default("user")
+  communityStrikes  Int       @default(0)
+  isBanned          Boolean   @default(false)
+  bannedUntil       DateTime?
+  lastStrikeAt      DateTime?
+  
+  // User Preferences
+  preferredState    String?
+  topicsOfInterest  String[]
+  appLanguage       String    @default("English")
+  
+  // Terms & Conditions
+  termsAccepted     Boolean   @default(false)
+  termsAcceptedAt   DateTime?
+  termsVersion      String?
+  
+  // Timestamps
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  lastLogin         DateTime?
+  
+  // Relations
+  posts             Post[]
+  likes             Like[]
+  comments          Comment[]
+  reports           Report[]
+  sessions          Session[]
+  communityReports  CommunityReport[]
+  savedComparisons  SavedComparison[]
+  userReports       UserReport[]
+  
+  @@index([email])
+  @@index([googleId])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([token])
+}
+
+// ========================================
+// SOCIAL FEED MODELS
+// ========================================
+
+model Post {
+  id               String   @id @default(cuid())
+  content          String
+  postType         String   @default("thought")
+  imageUrl         String?
+  hashtags         String[]
+  
+  // AI Moderation
+  moderationStatus String   @default("approved")
+  moderationReason String?
+  aiSafetyScore    Float    @default(100)
+  isVerified       Boolean  @default(true)
+  
+  // Engagement
+  shares           Int      @default(0)
+  
+  // Author
+  authorId         String
+  author           User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  // Timestamps
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  
+  // Relations
+  likes            Like[]
+  comments         Comment[]
+  
+  @@index([authorId])
+  @@index([createdAt(sort: Desc)])
+  @@index([moderationStatus])
+  @@index([postType])
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  
+  // Relations
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, postId])
+  @@index([postId])
+  @@index([userId])
+}
+
+model Comment {
+  id         String   @id @default(cuid())
+  content    String
+  is_flagged Boolean  @default(false) // AI moderation flag
+  
+  // Relations
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  postId     String
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  @@index([postId])
+  @@index([userId])
+  @@index([createdAt(sort: Desc)])
+}
+
+// ========================================
+// NEWS VERIFICATION MODELS
+// ========================================
+
+model NewsArticle {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  source      String
+  imageUrl    String?
+  status      String
+  confidence  Float
+  explanation String
+  category    String?
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  reports     Report[]
+  
+  @@index([status])
+  @@index([category])
+  @@index([createdAt(sort: Desc)])
+}
+
+model Report {
+  id          String      @id @default(cuid())
+  articleId   String
+  article     NewsArticle @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reason      String
+  description String?
+  createdAt   DateTime    @default(now())
+  
+  @@unique([articleId, userId])
+  @@index([articleId])
+  @@index([userId])
+}
+
+// ========================================
+// DATA PLATFORM MODELS
+// ========================================
+
+model PopulationData {
+  id                String   @id @default(cuid())
+  state             String   @unique
+  population        BigInt
+  youthUnemployment Float
+  ruralPopulation   BigInt
+  urbanPopulation   BigInt
+  migrationRate     Float?
+  lastUpdated       DateTime @default(now())
+  
+  @@index([state])
+}
+
+model EconomicData {
+  id              String   @id @default(cuid())
+  state           String?
+  gdp             Float?
+  gdpGrowth       Float?
+  employmentRate  Float?
+  perCapitaIncome Float?
+  povertyIndex    Float?
+  year            Int
+  lastUpdated     DateTime @default(now())
+  
+  @@index([state, year])
+}
+
+model GovernmentFinanceData {
+  id               String   @id @default(cuid())
+  state            String?
+  budgetAllocation Float
+  revenue          Float
+  expenditure      Float
+  taxCollection    Float?
+  welfareSpending  Float?
+  year             Int
+  lastUpdated      DateTime @default(now())
+  
+  @@index([state, year])
+}
+
+model EnvironmentData {
+  id               String   @id @default(cuid())
+  state            String   @unique
+  aqi              Float?
+  waterScarcity    Float?
+  wasteGeneration  Float?
+  recyclingRate    Float?
+  climateRiskIndex Float?
+  lastUpdated      DateTime @default(now())
+  
+  @@index([state])
+}
+
+model PodcastEpisode {
+  id                String   @id @default(cuid())
+  title             String
+  description       String?
+  audioUrl          String
+  transcriptHindi   String?
+  transcriptEnglish String?
+  duration          Int
+  publishedAt       DateTime
+  createdAt         DateTime @default(now())
+  
+  @@index([publishedAt(sort: Desc)])
+}
+
+model DataSnapshot {
+  id          String   @id @default(cuid())
+  source      String   @unique
+  data        String
+  lastUpdated DateTime @default(now())
+  expiresAt   DateTime
+  
+  @@index([source])
+  @@index([expiresAt])
+}
+
+// ========================================
+// UNIFIED DATA PLATFORM MODELS
+// ========================================
+
+model DatasetRegistry {
+  id                String         @id @default(cuid())
+  datasetId         String         @unique
+  name              String
+  resourceId        String
+  category          String
+  refreshInterval   Int
+  source            String         @default("data.gov.in")
+  normalizationType String
+  isActive          Boolean        @default(true)
+  lastFetched       DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  
+  fetchLogs         DataFetchLog[]
+  
+  @@index([category])
+  @@index([isActive])
+}
+
+model DataFetchLog {
+  id             String          @id @default(cuid())
+  datasetId      String
+  dataset        DatasetRegistry @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  status         String
+  recordsFetched Int             @default(0)
+  errorMessage   String?
+  duration       Int?
+  startedAt      DateTime        @default(now())
+  completedAt    DateTime?
+  
+  @@index([datasetId])
+  @@index([status])
+  @@index([startedAt(sort: Desc)])
+}
+
+model NormalizedIndicator {
+  id            String   @id @default(cuid())
+  indicatorName String
+  value         Float
+  unit          String
+  geography     String
+  geographyName String
+  period        String
+  periodType    String
+  sourceDataset String
+  category      String
+  metadata      String?
+  lastUpdated   DateTime @default(now())
+  
+  @@index([category, geographyName])
+  @@index([indicatorName, geographyName, period])
+}
+
+model DataUpdateSchedule {
+  id           String    @id @default(cuid())
+  datasetId    String    @unique
+  nextRefresh  DateTime
+  isRunning    Boolean   @default(false)
+  lastSuccess  DateTime?
+  failureCount Int       @default(0)
+  createdAt    DateTime  @default(now())
+  
+  @@index([nextRefresh])
+}
+
+// ========================================
+// COMMUNITY & REPORTING MODELS
+// ========================================
+
+enum ReportType {
+  FAKE_NEWS
+  MISLEADING_IMAGE
+  ABUSIVE_CONTENT
+}
+
+enum ReportStatus {
+  PENDING
+  UNDER_REVIEW
+  RESOLVED
+  REJECTED
+}
+
+model CommunityReport {
+  id             String       @id @default(cuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type           ReportType
+  title          String
+  description    String
+  status         ReportStatus @default(PENDING)
+  aiSpamScore    Float?
+  moderatorNotes String?
+  resolvedAt     DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  
+  auditLogs      AuditLog[]
+  
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt(sort: Desc)])
+}
+
+model ModerationStats {
+  id                 String   @id @default(cuid())
+  totalReports       Int      @default(0)
+  pendingReports     Int      @default(0)
+  resolvedThisWeek   Int      @default(0)
+  activeModerators   Int      @default(0)
+  lastUpdated        DateTime @default(now())
+  trendingCategories String?
+}
+
+model AuditLog {
+  id        String          @id @default(cuid())
+  reportId  String
+  report    CommunityReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  userId    String
+  action    String
+  ipAddress String?
+  userAgent String?
+  metadata  String?
+  createdAt DateTime        @default(now())
+  
+  @@index([reportId])
+  @@index([userId])
+  @@index([createdAt(sort: Desc)])
+}
+
+// ========================================
+// USER PERSONALIZATION MODELS
+// ========================================
+
+model SavedComparison {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  category  String
+  year      String?
+  url       String?
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([createdAt(sort: Desc)])
+}
+
+model UserReport {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  type        String
+  status      String
+  description String?
+  url         String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt(sort: Desc)])
+}
+
+model OTPVerification {
+  id          String   @id @default(cuid())
+  phoneNumber String
+  otp         String
+  expiresAt   DateTime
+  verified    Boolean  @default(false)
+  attempts    Int      @default(0)
+  createdAt   DateTime @default(now())
+  
+  @@index([phoneNumber])
+  @@index([expiresAt])
+}

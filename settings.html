@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zintel - Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container flex">
+        <aside class="sidebar">
+            <div class="logo-area"><div class="logo-box flex items-center gap-2"><div class="logo-icon bg-primary text-white">Z</div><span class="logo-text font-bold text-lg">ZINTEL</span></div></div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item"><i class="ri-dashboard-line"></i><span>Homepage</span></a>
+                <a href="population.html" class="nav-item"><i class="ri-bar-chart-grouped-line"></i><span>Population & Migration</span></a>
+                <a href="profile.html" class="nav-item"><i class="ri-user-3-line"></i><span>Profile</span></a>
+                <a href="#" class="nav-item active"><i class="ri-settings-3-line"></i><span>Settings</span></a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header flex items-center justify-between">
+                <div class="header-left flex items-center gap-4">
+                    <button class="mobile-toggle btn"><i class="ri-menu-2-line"></i></button>
+                    <h2 class="font-bold text-xl">Settings</h2>
+                </div>
+            </header>
+
+            <div class="dashboard-content container">
+                <div class="card max-w-2xl mx-auto">
+                    <h3 class="font-bold mb-6 text-lg">Application Settings</h3>
+                    
+                    <div class="mb-6">
+                        <h4 class="font-medium mb-2">Appearance</h4>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded border" style="border-color:#f1f5f9;">
+                            <span>Dark Mode</span>
+                            <label class="switch relative inline-block w-10 h-6">
+                                <input type="checkbox" class="opacity-0 w-0 h-0">
+                                <span class="slider round absolute cursor-pointer top-0 left-0 right-0 bottom-0 bg-gray-300 transition-all rounded-full before:absolute before:content-[''] before:h-4 before:w-4 before:left-1 before:bottom-1 before:bg-white before:transition-all before:rounded-full"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="font-medium mb-2">Data Preferences</h4>
+                        <div class="flex flex-col gap-3">
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" checked class="accent-primary"> Auto-refresh Live Data
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" checked class="accent-primary"> Show Trending News Alerts
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="font-medium mb-2">API Configuration (Optional)</h4>
+                        <input type="text" id="geminiKeyInput" placeholder="Enter Google Gemini API Key" class="w-full p-2 border rounded" style="border-color:#e2e8f0;">
+                        <p class="text-xs text-muted mt-1">Enhances dashboards with real AI-driven insights.</p>
+                    </div>
+
+                    <div class="flex justify-end gap-4 mt-8">
+                        <button class="btn border">Cancel</button>
+                        <button class="btn btn-primary" id="saveSettingsBtn">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="module">
+        import { initSidebar } from './js/components/sidebar.js';
+        import { geminiService } from './js/services/geminiService.js';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            initSidebar();
+            
+            const input = document.getElementById('geminiKeyInput');
+            const savedKey = geminiService.getApiKey();
+            if(savedKey) input.value = savedKey;
+
+            document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+                if(input.value) {
+                    geminiService.saveApiKey(input.value);
+                    alert('API Key Saved! AI features are now active.');
+                }
+            });
+        });
+    </script>
+    <style>
+        /* Simple Toggle Switch CSS */
+        .switch input:checked + .slider { background-color: #6366f1; }
+        .switch input:checked + .slider:before { transform: translateX(16px); }
+    </style>
+</body>
+</html>

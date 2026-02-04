@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zintel - Population & Migration</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container flex">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <a href="index.html" class="logo-box flex items-center gap-2">
+                    <img src="Zintel Logo.png" alt="Zintel Logo" class="logo-main" style="height: 40px; width: auto;">
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <i class="ri-dashboard-line"></i>
+                    <span>Homepage</span>
+                </a>
+                <a href="population.html" class="nav-item active">
+                    <i class="ri-bar-chart-grouped-line"></i>
+                    <span>Population & Migration</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ri-government-line"></i>
+                    <span>Government & Finance</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ri-money-dollar-circle-line"></i>
+                    <span>Citizen Economy</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ri-shield-check-line"></i>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ri-global-line"></i>
+                    <span>Export-Import & Industry</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item">
+                    <i class="ri-settings-3-line"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header flex items-center justify-between">
+                <div class="header-left flex items-center gap-4">
+                    <button class="mobile-toggle btn"><i class="ri-menu-2-line"></i></button>
+                    <h2 class="font-bold text-xl">Population & Migration Dashboard</h2>
+                </div>
+
+                <div class="header-right flex items-center gap-4">
+                    <div class="search-bar">
+                        <i class="ri-search-line"></i>
+                        <input type="text" placeholder="Search data...">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content container">
+                
+                <!-- KPI Row -->
+                <section class="stats-row flex gap-4 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Population</div>
+                        <div class="stat-value">1.42B</div>
+                        <div class="stat-trend"><i class="ri-men-line"></i> Est.</div>
+                    </div>
+                     <div class="stat-card">
+                        <div class="stat-label">Urban Population</div>
+                        <div class="stat-value">500M</div>
+                        <div class="stat-trend text-muted"><i class="ri-map-pin-line"></i> Growing</div>
+                    </div>
+                     <div class="stat-card">
+                        <div class="stat-label">Rural Population</div>
+                        <div class="stat-value">920M</div>
+                        <div class="stat-trend text-muted"><i class="ri-community-line"></i> Majority</div>
+                    </div>
+                     <div class="stat-card">
+                        <div class="stat-label">Migration Rate</div>
+                        <div class="stat-value">2.8%/yr</div>
+                        <div class="stat-trend up"><i class="ri-arrow-up-right-line"></i> High Mobility</div>
+                    </div>
+                </section>
+
+                <!-- Chart Section -->
+                <div class="flex gap-6">
+                    <div class="card w-full">
+                        <h3 class="font-bold mb-4">State-wise Population Distribution (Millions)</h3>
+                        <div style="height: 400px;">
+                            <canvas id="populationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Charts / Maps -->
+                <div class="flex gap-6 mt-6">
+                    <div class="card flex-1">
+                        <h3 class="font-bold mb-4">Youth Unemployment Density</h3>
+                        <div class="map-placeholder" style="background:#f1f5f9; height: 300px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
+                            <span class="text-muted">Interactive Map Placeholder</span>
+                        </div>
+                    </div>
+                    <div class="card flex-1">
+                        <h3 class="font-bold mb-4">Rural-to-Urban Migration Flow</h3>
+                        <div class="map-placeholder" style="background:#1e1e2e; height: 300px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:white;">
+                             <span class="text-muted">Flow Visualization Placeholder</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+             <footer class="footer mt-6 text-center text-muted text-sm pb-4">
+                &copy; 2025 India 360°. All rights reserved.
+            </footer>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { apiService } from './js/services/apiService.js';
+        
+        // Inline script to initialize Chart specific to this page
+        document.addEventListener('DOMContentLoaded', async () => {
+             const ctx = document.getElementById('populationChart');
+             if(ctx && window.Chart) {
+                 const data = await apiService.fetchPopulationData();
+                 
+                 // Transform data for Chart.js
+                 const labels = data.topStates.map(s => s.name);
+                 const values = data.topStates.map(s => parseInt(s.population)); // "240M" -> 240
+                 
+                 new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Population (Millions)',
+                            data: values,
+                            backgroundColor: '#6366f1',
+                            borderRadius: 6,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, grid: { display: false } },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                 });
+             }
+        });
+        
+        // Sidebar Import
+        import('./js/script.js'); 
+    </script>
+</body>
+</html>

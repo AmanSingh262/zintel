@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zintel - Government & Finance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container flex">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <div class="logo-box flex items-center gap-2">
+                    <div class="logo-icon bg-primary text-white">Z</div>
+                    <span class="logo-text font-bold text-lg">ZINTEL</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item"><i class="ri-dashboard-line"></i><span>Homepage</span></a>
+                <a href="population.html" class="nav-item"><i class="ri-bar-chart-grouped-line"></i><span>Population & Migration</span></a>
+                <a href="government.html" class="nav-item active"><i class="ri-government-line"></i><span>Government & Finance</span></a>
+                <a href="economy.html" class="nav-item"><i class="ri-money-dollar-circle-line"></i><span>Citizen Economy</span></a>
+                <a href="export.html" class="nav-item"><i class="ri-global-line"></i><span>Export-Import & Industry</span></a>
+                <a href="doctors.html" class="nav-item"><i class="ri-stethoscope-line"></i><span>Doctors & Geek Workers</span></a>
+                <a href="environment.html" class="nav-item"><i class="ri-leaf-line"></i><span>Environment & Climate</span></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header flex items-center justify-between">
+                <div class="header-left flex items-center gap-4">
+                    <button class="mobile-toggle btn"><i class="ri-menu-2-line"></i></button>
+                    <h2 class="font-bold text-xl">Government & Finance Dashboard</h2>
+                </div>
+                <div class="header-right flex items-center gap-4">
+                    <div class="search-bar"><i class="ri-search-line"></i><input type="text" placeholder="Search budget data..."></div>
+                    <a href="profile.html" class="btn btn-icon"><i class="ri-user-3-line"></i></a>
+                </div>
+            </header>
+
+            <div class="dashboard-content container">
+                <p class="mb-4 text-muted">Explore India's financial landscape with detailed insights into budget allocation and tax collection.</p>
+                
+                <div class="flex gap-6 mb-6">
+                    <select class="btn" style="background:white; border:1px solid #e2e8f0;"><option>2024</option><option>2023</option></select>
+                    <select class="btn" style="background:white; border:1px solid #e2e8f0;"><option>All States</option><option>Maharashtra</option></select>
+                </div>
+
+                <!-- Charts Row 1 -->
+                <div class="flex gap-6 mb-6" style="flex-wrap: wrap;">
+                    <div class="card flex-1">
+                        <h3 class="font-bold mb-4">Budget Allocation by Sector (2024)</h3>
+                        <div style="height: 300px; display:flex; justify-content:center;">
+                            <canvas id="budgetChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card flex-1">
+                        <h3 class="font-bold mb-4">State-wise Tax Collection (₹ Bn)</h3>
+                        <div style="height: 300px;">
+                            <canvas id="taxChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row 2 -->
+                <div class="flex gap-6 mb-6" style="flex-wrap: wrap;">
+                    <div class="card flex-1">
+                        <h3 class="font-bold mb-4">Revenue vs. Expenditure Trend</h3>
+                        <div style="height: 300px;">
+                            <canvas id="revExpChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card flex-1">
+                        <h3 class="font-bold mb-4">Welfare Spending Breakdown</h3>
+                        <div class="flex items-center justify-center h-full text-muted" style="height: 300px; background: #f8fafc; border-radius: 8px;">
+                            Placeholder: Stacked Bar Chart
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <footer class="footer mt-6 text-center text-muted text-sm pb-4">&copy; 2025 India 360°. All rights reserved.</footer>
+        </main>
+    </div>
+
+    <script type="module">
+        import { govtFinanceData } from './js/services/mockData.js';
+        import './js/script.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Budget Chart (Pie)
+            new Chart(document.getElementById('budgetChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(govtFinanceData.budget),
+                    datasets: [{
+                        data: Object.values(govtFinanceData.budget),
+                        backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#64748b']
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+            });
+
+            // Tax Chart (Horizontal Bar)
+            new Chart(document.getElementById('taxChart'), {
+                type: 'bar',
+                indexAxis: 'y',
+                data: {
+                    labels: govtFinanceData.taxCollection.map(d => d.state),
+                    datasets: [{
+                        label: 'Tax Collection (Bn)',
+                        data: govtFinanceData.taxCollection.map(d => d.amount),
+                        backgroundColor: '#10b981',
+                        borderRadius: 4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // Revenue Chart (Line)
+            new Chart(document.getElementById('revExpChart'), {
+                type: 'line',
+                data: {
+                    labels: govtFinanceData.revenueTrend.years,
+                    datasets: [
+                        { label: 'Revenue', data: govtFinanceData.revenueTrend.revenue, borderColor: '#10b981', tension: 0.4 },
+                        { label: 'Expenditure', data: govtFinanceData.revenueTrend.expenditure, borderColor: '#ef4444', tension: 0.4 }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        });
+    </script>
+</body>
+</html>

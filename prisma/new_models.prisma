@@ -1,0 +1,44 @@
+// Saved Comparisons - User's saved comparison reports
+model SavedComparison {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String   // "India vs Global GDP [2023]"
+  category    String   // "Economy", "Demographics", "Finance", "Education"
+  year        String?  // "2023", "2020-2022", "FY22"
+  url         String?  // Link to the comparison page
+  createdAt   DateTime @default(now())
+  
+  @@index([userId])
+}
+
+// User Reports - Reports submitted by users for moderation
+model UserReport {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String   // "Fake News: COVID-19 Vaccine"
+  type        String   // "Fake News", "Misleading Image", "Abusive Content", etc.
+  status      String   // "Pending Review", "Under Investigation", "Resolved", "Awaiting Data", "Action Taken"
+  description String?
+  url         String?  // Link to the reported content
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([status])
+}
+
+// OTP Verification - For phone number verification
+model OTPVerification {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  phoneNumber String
+  otp         String   // 6-digit OTP
+  expiresAt   DateTime // 5 minutes from creation
+  verified    Boolean  @default(false)
+  attempts    Int      @default(0) // Max 3 attempts
+  createdAt   DateTime @default(now())
+  
+  @@index([phoneNumber])
+  @@index([expiresAt])
+}

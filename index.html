@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zintel - The Nation in Live Data</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container flex">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <a href="index.html" class="logo-box">
+                    <img src="Zintel Logo.png" alt="Zintel" class="logo-main">
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item active">
+                    <i class="ri-dashboard-line"></i>
+                    <span>Homepage</span>
+                </a>
+                <a href="population.html" class="nav-item">
+                    <i class="ri-bar-chart-grouped-line"></i>
+                    <span>Population & Migration</span>
+                </a>
+                <a href="government.html" class="nav-item">
+                    <i class="ri-government-line"></i>
+                    <span>Government & Finance</span>
+                </a>
+                <a href="economy.html" class="nav-item">
+                    <i class="ri-money-dollar-circle-line"></i>
+                    <span>Citizen Economy</span>
+                </a>
+                    <i class="ri-shield-check-line"></i>
+                </a>
+                <a href="export.html" class="nav-item">
+                    <i class="ri-global-line"></i>
+                    <span>Export-Import & Industry</span>
+                </a>
+                <a href="doctors.html" class="nav-item">
+                    <i class="ri-stethoscope-line"></i>
+                    <span>Doctors & Workers</span>
+                </a>
+                <a href="environment.html" class="nav-item">
+                    <i class="ri-leaf-line"></i>
+                    <span>Environment</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="settings.html" class="nav-item">
+                    <i class="ri-settings-3-line"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="ri-user-3-line"></i>
+                    <span>Profile</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header flex items-center justify-between">
+                <div class="header-left flex items-center gap-4">
+                    <button class="mobile-toggle btn"><i class="ri-menu-2-line"></i></button>
+                    <!-- Top Nav Links -->
+                    <div class="top-nav flex items-center gap-4 text-sm text-muted">
+                        <a href="#">Explore Facts</a>
+                        <a href="#">Verify News</a>
+                        <a href="#">Podcasts</a>
+                        <a href="#">Data Compare</a>
+                        <a href="#">Community</a>
+                    </div>
+                </div>
+
+                <div class="header-right flex items-center gap-4">
+                    <div class="search-bar">
+                        <i class="ri-search-line"></i>
+                        <input type="text" placeholder="Search news, facts...">
+                    </div>
+                    <button class="btn-icon"><i class="ri-notification-3-line"></i></button>
+                    <a href="profile.html" class="btn btn-primary">Login</a>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content container">
+                <!-- Hero Section -->
+                <section class="hero-card card bg-gradient text-white">
+                    <div class="hero-text">
+                        <h1 class="hero-title">ZINTEL – The Nation in Live Data</h1>
+                        <p class="hero-subtitle">Gen-Z's Unfiltered News & Facts</p>
+                        <div class="hero-actions flex gap-4 mt-6">
+                            <button class="btn btn-white"><i class="ri-bubble-chart-line mr-2"></i> Explore Live Data</button>
+                            <button class="btn btn-outline-white"><i class="ri-headphone-line mr-2"></i> Listen to Today's Facts</button>
+                        </div>
+                    </div>
+                    <div class="hero-fact-bubble">
+                        <p id="daily-fact">"Did you know? India's GDP growth is projected at 7.3% for FY24!"</p>
+                    </div>
+                </section>
+
+                <!-- Quick Stats Row -->
+                <section class="stats-row flex gap-4 mt-6" id="quick-stats-container">
+                    <!-- Cards will be injected by JS -->
+                    <div class="loading-skeleton">Loading Live Data...</div>
+                </section>
+
+                <!-- Main Grid -->
+                <section class="main-grid flex gap-6 mt-6">
+                    <!-- Map Area -->
+                    <div class="map-section card flex-2">
+                        <h2 class="section-title">Interactive India Data Map</h2>
+                        <div id="india-map-container"></div>
+                    </div>
+
+                    <!-- Right Sidebar / Trending -->
+                    <div class="trending-section card flex-1">
+                        <div class="trending-header flex justify-between items-center mb-4">
+                            <h2 class="section-title">Trending Intelligence</h2>
+                            <div class="tabs flex gap-2 text-sm">
+                                <span class="tab active">Data</span>
+                                <span class="tab">News</span>
+                            </div>
+                        </div>
+                        <div class="trending-list" id="trending-list">
+                            <!-- List items injected via JS -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <footer class="footer mt-6 text-center text-muted text-sm pb-4">
+                &copy; 2025 India 360°. All rights reserved.
+            </footer>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { createIndiaMap } from './js/components/indiaMap.js';
+        import './js/script.js';
+        
+        // Initialize map after DOM loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            createIndiaMap('india-map-container');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zintel - Database Seeder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2e008b 0%, #8b5cf6 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 48px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 900;
+            color: #2e008b;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        p {
+            color: #6b7280;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .button {
+            width: 100%;
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 16px;
+        }
+
+        .button:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .button:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status {
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 24px;
+            display: none;
+        }
+
+        .status.success {
+            background: #d1fae5;
+            border: 2px solid #10b981;
+            color: #065f46;
+            display: block;
+        }
+
+        .status.error {
+            background: #fee2e2;
+            border: 2px solid #ef4444;
+            color: #991b1b;
+            display: block;
+        }
+
+        .status.loading {
+            background: #dbeafe;
+            border: 2px solid #3b82f6;
+            color: #1e40af;
+            display: block;
+        }
+
+        .posts-list {
+            margin-top: 24px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .post-item {
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .emoji {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+            text-align: center;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: #2e008b;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌱 Zintel Database Seeder</h1>
+        <p>Click the button below to populate your database with 10 sample posts from the official Zintel.in account.</p>
+
+        <button class="button" id="seedButton" onclick="seedDatabase()">
+            🚀 Seed Database Now
+        </button>
+
+        <div class="status" id="status"></div>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        async function seedDatabase() {
+            const button = document.getElementById('seedButton');
+            const status = document.getElementById('status');
+            const results = document.getElementById('results');
+
+            // Disable button
+            button.disabled = true;
+            button.textContent = '⏳ Seeding...';
+
+            // Show loading status
+            status.className = 'status loading';
+            status.innerHTML = '<span class="emoji">⏳</span><strong>Seeding database...</strong><br>This may take a few seconds.';
+
+            try {
+                const response = await fetch('http://localhost:4001/api/seed-posts');
+                const data = await response.json();
+
+                if (data.success) {
+                    // Success!
+                    status.className = 'status success';
+                    status.innerHTML = `
+                        <span class="emoji">✅</span>
+                        <strong>Success!</strong><br>
+                        Created ${data.data.postsCreated} posts from ${data.data.account.name}
+                    `;
+
+                    // Show stats
+                    results.innerHTML = `
+                        <div class="stats">
+                            <div class="stat">
+                                <div class="stat-value">${data.data.postsCreated}</div>
+                                <div class="stat-label">Posts Created</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">✓</div>
+                                <div class="stat-label">Verified Account</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">L${data.data.account.verificationLevel}</div>
+                                <div class="stat-label">Truth ID Level</div>
+                            </div>
+                        </div>
+                        <div class="posts-list">
+                            ${data.data.posts.map(post => `
+                                <div class="post-item">
+                                    📰 ${post.content}<br>
+                                    <small>❤️ ${post.likes} | 💬 ${post.comments} | 🔗 ${post.shares}</small>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+
+                    // Change button
+                    button.textContent = '✅ Database Seeded!';
+                    button.style.background = '#10b981';
+
+                    // Add link to social feed
+                    setTimeout(() => {
+                        results.innerHTML += `
+                            <a href="http://localhost:4001/social" style="
+                                display: block;
+                                text-align: center;
+                                margin-top: 24px;
+                                padding: 16px;
+                                background: #2e008b;
+                                color: white;
+                                text-decoration: none;
+                                border-radius: 12px;
+                                font-weight: 600;
+                            ">
+                                🎉 View Social Feed
+                            </a>
+                        `;
+                    }, 500);
+
+                } else {
+                    throw new Error(data.error || 'Unknown error');
+                }
+
+            } catch (error) {
+                // Error
+                status.className = 'status error';
+                status.innerHTML = `
+                    <span class="emoji">❌</span>
+                    <strong>Error!</strong><br>
+                    ${error.message}<br><br>
+                    <small>Make sure the development server is running on port 4001</small>
+                `;
+
+                button.disabled = false;
+                button.textContent = '🔄 Try Again';
+                button.style.background = '#ef4444';
+            }
+        }
+    </script>
+</body>
+</html>

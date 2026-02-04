@@ -1,0 +1,7 @@
+exclude:
+  - .next/**
+  - node_modules/**
+  - build/**
+  - dist/**
+  - out/**
+  - .cache/**

@@ -1,0 +1,147 @@
+{
+    "version": "1.0.0",
+    "lastUpdated": "2026-01-03",
+    "datasets": [
+        {
+            "datasetId": "population_india",
+            "name": "Population of India - Census Data",
+            "resourceId": "9ef84268-d588-465a-a308-a864a43d0070",
+            "category": "population",
+            "refreshInterval": 1440,
+            "normalizationType": "population",
+            "description": "State-wise population data from Census"
+        },
+        {
+            "datasetId": "rural_urban_population",
+            "name": "Rural and Urban Population Distribution",
+            "resourceId": "85bb6886-1c48-4e3f-80f1-d2e2a4a0b6e7",
+            "category": "population",
+            "refreshInterval": 1440,
+            "normalizationType": "population",
+            "description": "Rural-Urban population breakdown by state"
+        },
+        {
+            "datasetId": "state_gdp",
+            "name": "State-wise Gross Domestic Product",
+            "resourceId": "f8b6c7d4-3e9a-4c2b-9d8e-1a2b3c4d5e6f",
+            "category": "economy",
+            "refreshInterval": 1440,
+            "normalizationType": "economy",
+            "description": "GDP data for all Indian states"
+        },
+        {
+            "datasetId": "unemployment_rate",
+            "name": "Unemployment Rate by State",
+            "resourceId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "category": "economy",
+            "refreshInterval": 60,
+            "normalizationType": "economy",
+            "description": "Youth and overall unemployment statistics"
+        },
+        {
+            "datasetId": "per_capita_income",
+            "name": "Per Capita Income - State-wise",
+            "resourceId": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+            "category": "economy",
+            "refreshInterval": 1440,
+            "normalizationType": "economy",
+            "description": "Per capita income across Indian states"
+        },
+        {
+            "datasetId": "budget_allocation",
+            "name": "Union Budget Allocation",
+            "resourceId": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+            "category": "government",
+            "refreshInterval": 1440,
+            "normalizationType": "government",
+            "description": "Ministry-wise budget allocations"
+        },
+        {
+            "datasetId": "state_revenue",
+            "name": "State Government Revenue",
+            "resourceId": "d4e5f6a7-b8c9-0123-def0-234567890123",
+            "category": "government",
+            "refreshInterval": 1440,
+            "normalizationType": "government",
+            "description": "Revenue collection by state governments"
+        },
+        {
+            "datasetId": "tax_collection",
+            "name": "Tax Collection Statistics",
+            "resourceId": "e5f6a7b8-c9d0-1234-ef01-345678901234",
+            "category": "government",
+            "refreshInterval": 1440,
+            "normalizationType": "government",
+            "description": "Direct and indirect tax collections"
+        },
+        {
+            "datasetId": "air_quality_index",
+            "name": "Air Quality Index (AQI) by City",
+            "resourceId": "f6a7b8c9-d0e1-2345-f012-456789012345",
+            "category": "environment",
+            "refreshInterval": 60,
+            "normalizationType": "environment",
+            "description": "Real-time AQI data for major cities"
+        },
+        {
+            "datasetId": "water_resources",
+            "name": "Water Resources and Availability",
+            "resourceId": "a7b8c9d0-e1f2-3456-0123-567890123456",
+            "category": "environment",
+            "refreshInterval": 1440,
+            "normalizationType": "environment",
+            "description": "Water scarcity and availability metrics"
+        },
+        {
+            "datasetId": "waste_management",
+            "name": "Municipal Solid Waste Generation",
+            "resourceId": "b8c9d0e1-f2a3-4567-1234-678901234567",
+            "category": "environment",
+            "refreshInterval": 1440,
+            "normalizationType": "environment",
+            "description": "City-wise waste generation and management"
+        },
+        {
+            "datasetId": "export_import",
+            "name": "Export-Import Trade Statistics",
+            "resourceId": "c9d0e1f2-a3b4-5678-2345-789012345678",
+            "category": "trade",
+            "refreshInterval": 1440,
+            "normalizationType": "trade",
+            "description": "Commodity-wise export-import data"
+        },
+        {
+            "datasetId": "industrial_production",
+            "name": "Index of Industrial Production",
+            "resourceId": "d0e1f2a3-b4c5-6789-3456-890123456789",
+            "category": "industry",
+            "refreshInterval": 1440,
+            "normalizationType": "industry",
+            "description": "Manufacturing and industrial output"
+        },
+        {
+            "datasetId": "healthcare_infrastructure",
+            "name": "Healthcare Infrastructure Data",
+            "resourceId": "e1f2a3b4-c5d6-7890-4567-901234567890",
+            "category": "healthcare",
+            "refreshInterval": 1440,
+            "normalizationType": "healthcare",
+            "description": "Hospitals, doctors, and medical facilities"
+        },
+        {
+            "datasetId": "employment_statistics",
+            "name": "Employment and Labour Statistics",
+            "resourceId": "f2a3b4c5-d6e7-8901-5678-012345678901",
+            "category": "economy",
+            "refreshInterval": 1440,
+            "normalizationType": "economy",
+            "description": "Sector-wise employment data"
+        }
+    ],
+    "notes": [
+        "Resource IDs are examples and should be verified from data.gov.in catalog",
+        "Refresh intervals are in minutes (60 = 1 hour, 1440 = 24 hours)",
+        "Critical datasets (AQI, unemployment) have shorter refresh intervals",
+        "All datasets use the same API key from environment variables"
+    ]
+}

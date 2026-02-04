@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zintel - Explore & Engagement</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container flex">
+        <aside class="sidebar">
+            <div class="logo-area"><div class="logo-box flex items-center gap-2"><div class="logo-icon bg-primary text-white">Z</div><span class="logo-text font-bold text-lg">ZINTEL</span></div></div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item"><i class="ri-dashboard-line"></i><span>Homepage</span></a>
+                <a href="population.html" class="nav-item"><i class="ri-bar-chart-grouped-line"></i><span>Population & Migration</span></a>
+                <a href="government.html" class="nav-item"><i class="ri-government-line"></i><span>Government & Finance</span></a>
+                <a href="social.html" class="nav-item"><i class="ri-discuss-line"></i><span>Live Social & Community</span></a>
+                <a href="engagement.html" class="nav-item active"><i class="ri-compass-3-line"></i><span>Explore Data</span></a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header flex items-center justify-between">
+                <div class="header-left flex items-center gap-4">
+                    <button class="mobile-toggle btn"><i class="ri-menu-2-line"></i></button>
+                    <h2 class="font-bold text-xl">Explore Data</h2>
+                </div>
+            </header>
+
+            <div class="dashboard-content container">
+                
+                <div class="mb-6 relative">
+                    <i class="ri-search-line absolute left-3 top-3 text-muted"></i>
+                    <input type="text" placeholder="Search for data, reports, or topics..." class="w-full p-3 pl-10 rounded-lg border focus:border-primary outline-none" style="border-color:#e2e8f0;">
+                </div>
+
+                <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
+                    <button class="btn btn-primary text-sm">All Categories</button>
+                    <button class="btn bg-white border text-sm" style="border-color:#e2e8f0;">Recent Updates</button>
+                    <button class="btn bg-white border text-sm" style="border-color:#e2e8f0;">Trending Data</button>
+                    <button class="btn bg-white border text-sm" style="border-color:#e2e8f0;">My Saved Reports</button>
+                </div>
+
+                <div class="grid flex gap-6" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                    
+                    <a href="population.html" class="card hover:shadow-lg transition-all text-main no-underline block" style="text-decoration:none;">
+                        <h3 class="font-bold mb-2 flex items-center gap-2"><i class="ri-bar-chart-grouped-line text-primary"></i> Population & Migration</h3>
+                        <p class="text-sm text-muted mb-4">Detailed demographic insights and migration patterns across states.</p>
+                        <img src="Zintel UI UX_Page_02.jpg" class="w-full h-32 object-cover rounded mb-4 opacity-80" alt="Preview">
+                        <span class="text-primary text-sm font-medium">View Dashboard →</span>
+                    </a>
+
+                    <a href="economy.html" class="card hover:shadow-lg transition-all text-main no-underline block" style="text-decoration:none;">
+                        <h3 class="font-bold mb-2 flex items-center gap-2"><i class="ri-money-dollar-circle-line text-primary"></i> Citizen Economy</h3>
+                        <p class="text-sm text-muted mb-4">Employment, income distribution, and poverty metrics analysis.</p>
+                        <div class="h-32 bg-gray-100 rounded mb-4 flex items-center justify-center text-muted"><i class="ri-line-chart-line text-4xl"></i></div>
+                        <span class="text-primary text-sm font-medium">View Dashboard →</span>
+                    </a>
+
+                        <h3 class="font-bold mb-2 flex items-center gap-2"><i class="ri-shield-check-line text-primary"></i> Media Truth</h3>
+                        <p class="text-sm text-muted mb-4">Tracking news veracity and media ownership trends nationwide.</p>
+                         <div class="h-32 bg-gray-100 rounded mb-4 flex items-center justify-center text-muted"><i class="ri-radar-line text-4xl"></i></div>
+                        <span class="text-primary text-sm font-medium">View Dashboard →</span>
+                    </a>
+
+                     <a href="environment.html" class="card hover:shadow-lg transition-all text-main no-underline block" style="text-decoration:none;">
+                        <h3 class="font-bold mb-2 flex items-center gap-2"><i class="ri-leaf-line text-primary"></i> Environment</h3>
+                        <p class="text-sm text-muted mb-4">AQI, water scarcity, and climate risk assessments.</p>
+                         <div class="h-32 bg-gray-100 rounded mb-4 flex items-center justify-center text-muted"><i class="ri-plant-line text-4xl"></i></div>
+                        <span class="text-primary text-sm font-medium">View Dashboard →</span>
+                    </a>
+
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="js/script.js"></script>
+</body>
+</html>

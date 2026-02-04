@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zintel - Login & Personalization</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container flex">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <div class="logo-box flex items-center gap-2">
+                    <div class="logo-icon bg-primary text-white">Z</div>
+                    <span class="logo-text font-bold text-lg">ZINTEL</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <i class="ri-dashboard-line"></i>
+                    <span>Homepage</span>
+                </a>
+                <a href="population.html" class="nav-item">
+                    <i class="ri-bar-chart-grouped-line"></i>
+                    <span>Population & Migration</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ri-government-line"></i>
+                    <span>Government & Finance</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ri-money-dollar-circle-line"></i>
+                    <span>Citizen Economy</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ri-shield-check-line"></i>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header flex items-center justify-between">
+                <div class="header-left flex items-center gap-4">
+                    <button class="mobile-toggle btn"><i class="ri-menu-2-line"></i></button>
+                    <h2 class="font-bold text-xl">Login & Personalization</h2>
+                </div>
+                <!-- Simple header -->
+            </header>
+
+            <!-- Profile Content -->
+            <div class="dashboard-content container">
+                <div class="flex gap-6" style="flex-wrap: wrap;">
+                    
+                    <!-- Left Column: Profile Settings -->
+                    <div class="card flex-1" style="min-width: 350px;">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="avatar bg-primary text-white flex items-center justify-center font-bold text-xl" style="width: 64px; height: 64px; border-radius: 50%;">RG</div>
+                            <div>
+                                <h3 class="font-bold text-lg">Rajesh Gupta</h3>
+                                <p class="text-sm text-muted">rajesh.gupta@example.com</p>
+                                <div class="badge text-success text-sm flex items-center gap-1 mt-1">
+                                    <i class="ri-checkbox-circle-fill"></i> Truth ID Verified
+                                </div>
+                            </div>
+                        </div>
+
+                        <form>
+                            <h4 class="font-bold mb-4">Content Preferences</h4>
+                            <div class="mb-4">
+                                <label class="label text-sm text-muted mb-1 block">Preferred State for News</label>
+                                <select class="w-full btn" style="justify-content: space-between; background: #f8fafc;">
+                                    <option>Maharashtra</option>
+                                    <option>Delhi</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="label text-sm text-muted mb-1 block">Topics of Interest</label>
+                                <div class="flex gap-2 flex-wrap mb-2">
+                                    <span class="tag bg-primary text-white text-sm px-3 py-1 rounded-full">Politics x</span>
+                                    <span class="tag bg-primary text-white text-sm px-3 py-1 rounded-full">Technology x</span>
+                                </div>
+                            </div>
+
+                            <h4 class="font-bold mb-4 mt-6">Account Security</h4>
+                            <button type="button" class="btn w-full mb-3" style="border: 1px solid #ddd;">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="18" class="mr-2"> Connect with Google
+                            </button>
+                            
+                            <div class="mb-4">
+                                <label class="label text-sm text-muted mb-1 block">OTP Login</label>
+                                <div class="flex gap-2">
+                                    <input type="text" placeholder="Enter phone number" class="w-full p-2 rounded border" style="background:#f8fafc; border:1px solid #e2e8f0;">
+                                    <button class="btn btn-primary">Send</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Right Column: Saved & Reports -->
+                    <div class="flex-1 flex flex-col gap-6" style="min-width: 350px;">
+                        <div class="card">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-bold">Saved Comparisons</h3>
+                                <a href="#" class="text-sm text-primary">View All</a>
+                            </div>
+                            <ul class="text-sm">
+                                <li class="flex justify-between py-2 border-b" style="border-color: #f1f5f9;">
+                                    <span><i class="ri-line-chart-line mr-2 text-muted"></i> India vs Global GDP (2023)</span>
+                                    <span class="text-muted">Economy</span>
+                                </li>
+                                <li class="flex justify-between py-2 border-b" style="border-color: #f1f5f9;">
+                                    <span><i class="ri-user-follow-line mr-2 text-muted"></i> Population Growth</span>
+                                    <span class="text-muted">Demographics</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="card">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-bold">My Reports</h3>
+                                <a href="#" class="text-sm text-primary">View All</a>
+                            </div>
+                            <ul class="text-sm">
+                                <li class="flex justify-between py-2 border-b" style="border-color: #f1f5f9;">
+                                    <span><i class="ri-file-warning-line mr-2 text-muted"></i> Fake News: COVID-19 Vaccine</span>
+                                    <span class="text-danger rounded px-2 py-0.5 bg-red-50 text-xs">Pending Review</span>
+                                </li>
+                                <li class="flex justify-between py-2 border-b" style="border-color: #f1f5f9;">
+                                    <span><i class="ri-spam-line mr-2 text-muted"></i> Spam Link in Comments</span>
+                                    <span class="text-success rounded px-2 py-0.5 bg-green-50 text-xs">Action Taken</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="js/script.js"></script>
+</body>
+</html>

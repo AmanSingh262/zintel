@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <defs>
+    <style>
+      .state { fill: #6366f1; stroke: #ffffff; stroke-width: 2; cursor: pointer; opacity: 0.8; }
+      .state:hover { opacity: 1; fill: #818cf8; }
+    </style>
+  </defs>
+  
+  <!-- Jammu & Kashmir -->
+  <path id="JK" class="state" d="M240,40 L290,35 L320,50 L335,80 L330,110 L310,130 L280,135 L250,125 L230,100 L225,70 Z"/>
+  
+  <!-- Himachal Pradesh -->
+  <path id="HP" class="state" d="M280,135 L310,130 L325,145 L320,165 L300,175 L275,170 Z"/>
+  
+  <!-- Punjab -->
+  <path id="PB" class="state" d="M250,125 L280,135 L275,170 L260,185 L240,175 Z"/>
+  
+  <!-- Haryana -->
+  <path id="HR" class="state" d="M260,185 L275,170 L300,175 L310,195 L298,215 L275,218 L255,210 Z"/>
+  
+  <!-- Delhi -->
+  <circle id="DL" class="state" cx="280" cy="195" r="8"/>
+  
+  <!-- Uttarakhand -->
+  <path id="UK" class="state" d="M300,175 L320,165 L345,175 L355,195 L340,215 L310,195 Z"/>
+  
+  <!-- Rajasthan -->
+  <path id="RJ" class="state" d="M180,180 L240,175 L260,185 L255,210 L265,250 L275,300 L270,350 L250,400 L210,395 L170,370 L145,330 L135,280 L150,230 Z"/>
+  
+  <!-- Gujarat -->
+  <path id="GJ" class="state" d="M110,320 L145,330 L170,370 L180,420 L175,470 L155,515 L120,505 L90,480 L70,440 L75,400 L85,360 Z"/>
+  
+  <!-- Uttar Pradesh -->
+  <path id="UP" class="state" d="M275,218 L340,215 L400,225 L450,245 L480,275 L485,315 L470,350 L435,360 L390,365 L350,355 L310,340 L285,310 L275,280 L270,250 Z"/>
+  
+  <!-- Bihar -->
+  <path id="BR" class="state" d="M470,350 L515,345 L545,360 L560,385 L555,415 L535,435 L505,440 L475,425 L460,395 Z"/>
+  
+  <!-- Jharkhand -->
+  <path id="JH" class="state" d="M435,360 L475,425 L480,460 L465,495 L440,510 L410,505 L385,485 L375,450 L390,415 Z"/>
+  
+  <!-- West Bengal -->
+  <path id="WB" class="state" d="M505,440 L555,415 L585,430 L610,460 L620,500 L615,540 L595,570 L565,585 L540,575 L520,550 L505,515 L490,480 Z"/>
+  
+  <!-- Sikkim -->
+  <path id="SK" class="state" d="M575,330 L595,325 L605,345 L595,360 L580,355 Z"/>
+  
+  <!-- Arunachal Pradesh -->
+  <path id="AR" class="state" d="M605,280 L650,265 L690,275 L710,295 L715,325 L700,355 L675,365 L640,360 L610,345 L605,310 Z"/>
+  
+  <!-- Assam -->
+  <path id="AS" class="state" d="M585,430 L640,410 L670,425 L685,450 L680,480 L655,495 L625,490 L600,470 Z"/>
+  
+  <!-- Nagaland -->
+  <path id="NL" class="state" d="M685,450 L710,445 L725,465 L720,485 L700,490 L680,480 Z"/>
+  
+  <!-- Manipur -->
+  <path id="MN" class="state" d="M700,490 L720,485 L730,505 L725,525 L710,530 L695,520 Z"/>
+  
+  <!-- Mizoram -->
+  <path id="MZ" class="state" d="M695,520 L710,530 L710,555 L695,565 L680,555 Z"/>
+  
+  <!-- Tripura -->
+  <path id="TR" class="state" d="M655,495 L675,500 L680,520 L670,535 L650,530 Z"/>
+  
+  <!-- Meghalaya -->
+  <path id="ML" class="state" d="M625,490 L655,495 L650,520 L630,520 Z"/>
+  
+  <!-- Madhya Pradesh -->
+  <path id="MP" class="state" d="M270,350 L310,340 L350,355 L390,365 L410,385 L420,425 L415,465 L395,505 L370,535 L335,550 L295,555 L255,545 L220,520 L200,480 L195,440 L210,395 L250,400 Z"/>
+  
+  <!-- Chhattisgarh -->
+  <path id="CT" class="state" d="M395,505 L440,510 L455,540 L460,575 L445,610 L420,625 L390,620 L365,600 L355,570 L370,535 Z"/>
+  
+  <!-- Odisha (Orissa) -->
+  <path id="OR" class="state" d="M420,625 L465,630 L495,655 L510,690 L510,725 L495,755 L465,765 L435,755 L410,730 L395,695 L400,660 Z"/>
+  
+  <!-- Maharashtra -->
+  <path id="MH" class="state" d="M155,515 L210,520 L255,545 L295,555 L315,590 L325,635 L320,680 L300,715 L265,730 L220,730 L180,715 L145,685 L120,645 L115,595 L125,555 Z"/>
+  
+  <!-- Goa -->
+  <path id="GA" class="state" d="M180,715 L195,710 L205,725 L200,740 L185,745 L175,735 Z"/>
+  
+  <!-- Karnataka -->
+  <path id="KA" class="state" d="M220,730 L265,730 L285,765 L295,805 L295,855 L280,895 L255,915 L220,920 L185,905 L165,870 L160,830 L170,785 L185,750 Z"/>
+  
+  <!-- Andhra Pradesh -->
+  <path id="AP" class="state" d="M320,680 L370,675 L410,690 L435,720 L445,765 L440,810 L420,850 L390,870 L355,875 L325,860 L305,825 L295,780 L300,740 Z"/>
+  
+  <!-- Telangana -->
+  <path id="TG" class="state" d="M325,635 L370,630 L400,650 L410,690 L370,675 L320,680 Z"/>
+  
+  <!-- Tamil Nadu -->
+  <path id="TN" class="state" d="M255,915 L295,905 L325,915 L350,945 L360,985 L350,1020 L320,1040 L280,1045 L245,1035 L220,1010 L210,975 L215,940 Z"/>
+  
+  <!-- Kerala -->
+  <path id="KL" class="state" d="M185,905 L220,920 L225,965 L230,1010 L225,1050 L210,1080 L185,1095 L160,1090 L145,1065 L140,1025 L145,985 L155,945 Z"/>
+  
+  <!-- Andaman & Nicobar -->
+  <g id="AN">
+    <ellipse class="state" cx="720" cy="820" rx="15" ry="60"/>
+  </g>
+  
+  <!-- Lakshadweep -->
+  <g id="LD">
+    <circle class="state" cx="85" cy="850" r="8"/>
+    <circle class="state" cx="75" cy="870" r="6"/>
+    <circle class="state" cx="90" cy="885" r="5"/>
+  </g>
+</svg>

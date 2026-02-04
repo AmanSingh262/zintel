@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zintel - Live Social & Community</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container flex">
+        <aside class="sidebar">
+            <div class="logo-area"><div class="logo-box flex items-center gap-2"><div class="logo-icon bg-primary text-white">Z</div><span class="logo-text font-bold text-lg">ZINTEL</span></div></div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item"><i class="ri-dashboard-line"></i><span>Homepage</span></a>
+                <a href="population.html" class="nav-item"><i class="ri-bar-chart-grouped-line"></i><span>Population & Migration</span></a>
+                <a href="government.html" class="nav-item"><i class="ri-government-line"></i><span>Government & Finance</span></a>
+                <a href="environment.html" class="nav-item"><i class="ri-leaf-line"></i><span>Environment & Climate</span></a>
+                <a href="social.html" class="nav-item active"><i class="ri-discuss-line"></i><span>Live Social & Community</span></a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header flex items-center justify-between">
+                <div class="header-left flex items-center gap-4">
+                    <button class="mobile-toggle btn"><i class="ri-menu-2-line"></i></button>
+                    <h2 class="font-bold text-xl">Live Social & Community</h2>
+                </div>
+            </header>
+
+            <div class="dashboard-content container">
+                
+                <div class="flex gap-6">
+                    <!-- Feed Section -->
+                    <div class="flex-2">
+                        <div class="card mb-4 p-4 flex gap-4 items-center">
+                            <div class="bg-gray-200 rounded-full w-10 h-10 flex items-center justify-center"><i class="ri-user-smile-line"></i></div>
+                            <input type="text" placeholder="Start a new discussion..." class="flex-1 border-none outline-none bg-transparent">
+                            <button class="btn btn-icon"><i class="ri-send-plane-fill text-primary"></i></button>
+                        </div>
+
+                        <div id="posts-container" class="space-y-4"></div>
+                    </div>
+
+                    <!-- Sidebar Section -->
+                    <div class="flex-1">
+                        <div class="card">
+                            <h3 class="font-bold mb-4">Trending Public Discussions</h3>
+                            <ul id="discussions-list" class="space-y-3"></ul>
+                        </div>
+                         
+                        <div class="card mt-6 bg-primary text-white border-none">
+                            <h3 class="font-bold mb-2"><i class="ri-verified-badge-line"></i> Real-Person Verification</h3>
+                            <p class="text-sm opacity-90 mb-4">Posts from verified users are prioritized. Complete your verification to enhance visibility.</p>
+                            <button class="btn btn-white w-full text-sm">Verify Now</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { socialData } from './js/services/mockData.js';
+        import './js/script.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Render Posts
+            const postsContainer = document.getElementById('posts-container');
+            socialData.posts.forEach(post => {
+                const badge = post.verified ? '<i class="ri-checkbox-circle-fill text-primary text-sm ml-1" title="Verified"></i>' : '';
+                const card = document.createElement('div');
+                card.className = 'card mb-4';
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-indigo-100 text-primary flex items-center justify-center font-bold text-lg">${post.user[0]}</div>
+                            <div>
+                                <h4 class="font-bold text-sm flex items-center">${post.user} ${badge}</h4>
+                                <span class="text-xs text-muted">${post.time}</span>
+                            </div>
+                        </div>
+                        <button class="btn-icon"><i class="ri-more-fill"></i></button>
+                    </div>
+                    <p class="mb-4 text-sm leading-relaxed">${post.content}</p>
+                    <div class="flex items-center gap-6 text-muted text-sm">
+                        <button class="flex items-center gap-1 hover:text-primary"><i class="ri-thumb-up-line"></i> ${post.likes}</button>
+                        <button class="flex items-center gap-1 hover:text-primary"><i class="ri-chat-1-line"></i> ${post.comments}</button>
+                        <button class="flex items-center gap-1 ml-auto hover:text-primary"><i class="ri-share-forward-line"></i> Share</button>
+                    </div>
+                `;
+                postsContainer.appendChild(card);
+            });
+
+            // Render Trends
+            const discList = document.getElementById('discussions-list');
+            socialData.discussions.forEach(d => {
+                const li = document.createElement('li');
+                li.className = 'border-b pb-2 last:border-none';
+                li.style.borderColor = '#f1f5f9';
+                li.innerHTML = `
+                    <div class="font-medium text-sm hover:text-primary cursor-pointer">${d.topic}</div>
+                    <div class="text-xs text-muted">${d.count} discussions</div>
+                `;
+                discList.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>

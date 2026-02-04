@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zintel - Environment & Climate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container flex">
+        <aside class="sidebar">
+            <div class="logo-area"><div class="logo-box flex items-center gap-2"><div class="logo-icon bg-primary text-white">Z</div><span class="logo-text font-bold text-lg">ZINTEL</span></div></div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item"><i class="ri-dashboard-line"></i><span>Homepage</span></a>
+                <a href="population.html" class="nav-item"><i class="ri-bar-chart-grouped-line"></i><span>Population & Migration</span></a>
+                <a href="government.html" class="nav-item"><i class="ri-government-line"></i><span>Government & Finance</span></a>
+                <a href="environment.html" class="nav-item active"><i class="ri-leaf-line"></i><span>Environment & Climate</span></a>
+                <a href="social.html" class="nav-item"><i class="ri-discuss-line"></i><span>Live Social & Community</span></a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header flex items-center justify-between">
+                <div class="header-left flex items-center gap-4">
+                    <button class="mobile-toggle btn"><i class="ri-menu-2-line"></i></button>
+                    <h2 class="font-bold text-xl">Environment & Climate Dashboard</h2>
+                </div>
+            </header>
+
+            <div class="dashboard-content container">
+                
+                <div class="card mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold">AQI Pollution Trends (Delhi)</h3>
+                        <span class="badge bg-red-100 text-danger px-2 py-1 rounded text-xs">Live</span>
+                    </div>
+                    <div style="height: 300px;">
+                        <canvas id="aqiChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="flex gap-6 mb-6">
+                    <!-- Waste Chart -->
+                    <div class="card flex-1">
+                        <h3 class="font-bold mb-4">Waste Generation vs. Recycling</h3>
+                        <div style="height: 300px;">
+                            <canvas id="wasteChart"></canvas>
+                        </div>
+                    </div>
+                     <!-- Map Placeholder -->
+                    <div class="card flex-1 bg-gradient text-white flex items-center justify-center text-center" style="background: linear-gradient(to right, #059669, #10b981);">
+                        <div>
+                            <i class="ri-drop-line text-4xl mb-2"></i>
+                            <h3 class="font-bold text-xl">Water Scarcity Index</h3>
+                            <p class="text-sm opacity-90 mt-2">Interactive Map Visualization</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { environmentData } from './js/services/mockData.js';
+        import './js/script.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // AQI Chart
+            new Chart(document.getElementById('aqiChart'), {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'AQI Level',
+                        data: environmentData.aqiTrend,
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // Waste Chart
+            new Chart(document.getElementById('wasteChart'), {
+                type: 'bar',
+                indexAxis: 'y',
+                data: {
+                    labels: environmentData.wasteGeneration.map(d => d.type),
+                    datasets: [
+                        { label: 'Generated', data: environmentData.wasteGeneration.map(d => d.gen), backgroundColor: '#f97316' },
+                        { label: 'Recycled', data: environmentData.wasteGeneration.map(d => d.recycled), backgroundColor: '#22c55e' }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        });
+    </script>
+</body>
+</html>

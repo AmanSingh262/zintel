@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zintel - Citizen Economy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container flex">
+        <aside class="sidebar">
+            <div class="logo-area">
+                <a href="index.html" class="logo-box">
+                    <img src="Zintel Logo High Quility.png" alt="Zintel" class="logo-main">
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item"><i class="ri-dashboard-line"></i><span>Homepage</span></a>
+                <a href="population.html" class="nav-item"><i class="ri-bar-chart-grouped-line"></i><span>Population & Migration</span></a>
+                <a href="government.html" class="nav-item"><i class="ri-government-line"></i><span>Government & Finance</span></a>
+                <a href="economy.html" class="nav-item active"><i class="ri-money-dollar-circle-line"></i><span>Citizen Economy</span></a>
+                <a href="export.html" class="nav-item"><i class="ri-global-line"></i><span>Export-Import & Industry</span></a>
+                <a href="doctors.html" class="nav-item"><i class="ri-stethoscope-line"></i><span>Doctors & Geek Workers</span></a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header flex items-center justify-between">
+                <div class="header-left flex items-center gap-4">
+                    <button class="mobile-toggle btn"><i class="ri-menu-2-line"></i></button>
+                    <h2 class="font-bold text-xl">Citizen Economy Dashboard</h2>
+                </div>
+            </header>
+
+            <div class="dashboard-content container">
+                
+                <!-- KPI Cards -->
+                <section class="stats-row flex gap-4 mb-6">
+                    <div class="stat-card">
+                        <div class="stat-label">Live Employment Creation</div>
+                        <div class="stat-value text-primary">1,234,567</div>
+                        <div class="stat-trend"><span class="text-sm text-muted">Jobs Created This Year</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Avg Per Capita Income</div>
+                        <div class="stat-value">₹1,95,000</div>
+                        <div class="stat-trend"><span class="text-sm text-muted">National Average</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Poverty Headcount</div>
+                        <div class="stat-value text-danger">18.6%</div>
+                        <div class="stat-trend"><span class="text-sm text-muted">National Level (2023)</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Youth Unemployment</div>
+                        <div class="stat-value">23.1%</div>
+                        <div class="stat-trend down"><i class="ri-arrow-down-line"></i> Ages 15-29</div>
+                    </div>
+                </section>
+
+                <div class="flex gap-6 mb-6">
+                    <!-- Per Capita Chart -->
+                    <div class="card flex-2">
+                        <h3 class="font-bold mb-4">Per Capita Income by State</h3>
+                        <div style="height: 350px;">
+                            <canvas id="incomeChart"></canvas>
+                        </div>
+                    </div>
+                    <!-- Poverty Table -->
+                    <div class="card flex-1">
+                        <h3 class="font-bold mb-4">Poverty & Vulnerability</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left">
+                                <thead class="text-muted border-b" style="border-color:#f1f5f9;">
+                                    <tr><th class="pb-2">Region</th><th class="pb-2">Index</th><th class="pb-2">Level</th></tr>
+                                </thead>
+                                <tbody id="povertyTableBody">
+                                    <!-- Injected via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { economyData } from './js/services/mockData.js';
+        import './js/script.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Income Chart
+            new Chart(document.getElementById('incomeChart'), {
+                type: 'bar',
+                data: {
+                    labels: economyData.perCapitaStates.map(d => d.state),
+                    datasets: [{
+                        label: 'Annual Income (₹)',
+                        data: economyData.perCapitaStates.map(d => d.income),
+                        backgroundColor: '#6366f1',
+                        borderRadius: 6
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+            });
+
+            // Poverty Table
+            const tableBody = document.getElementById('povertyTableBody');
+            economyData.povertyIndex.forEach(item => {
+                const row = document.createElement('tr');
+                const badgeClass = item.level === 'High' ? 'bg-red-100 text-red-600' : (item.level === 'Medium' ? 'bg-yellow-100 text-yellow-600' : 'bg-green-100 text-green-600');
+                
+                row.innerHTML = `
+                    <td class="py-3 font-medium">${item.region}</td>
+                    <td class="py-3 text-muted">${item.score}</td>
+                    <td class="py-3"><span class="px-2 py-1 rounded text-xs font-bold ${badgeClass}">${item.level}</span></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        });
+    </script>
+</body>
+</html>

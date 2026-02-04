@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zintel - Export-Import & Industry</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container flex">
+        <aside class="sidebar">
+            <div class="logo-area"><div class="logo-box flex items-center gap-2"><div class="logo-icon bg-primary text-white">Z</div><span class="logo-text font-bold text-lg">ZINTEL</span></div></div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item"><i class="ri-dashboard-line"></i><span>Homepage</span></a>
+                <a href="population.html" class="nav-item"><i class="ri-bar-chart-grouped-line"></i><span>Population & Migration</span></a>
+                <a href="government.html" class="nav-item"><i class="ri-government-line"></i><span>Government & Finance</span></a>
+                <a href="economy.html" class="nav-item"><i class="ri-money-dollar-circle-line"></i><span>Citizen Economy</span></a>
+                <a href="export.html" class="nav-item active"><i class="ri-global-line"></i><span>Export-Import & Industry</span></a>
+                <a href="doctors.html" class="nav-item"><i class="ri-stethoscope-line"></i><span>Doctors & Geek Workers</span></a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header flex items-center justify-between">
+                <div class="header-left flex items-center gap-4">
+                    <button class="mobile-toggle btn"><i class="ri-menu-2-line"></i></button>
+                    <h2 class="font-bold text-xl">Export-Import & Industry</h2>
+                </div>
+            </header>
+
+            <div class="dashboard-content container">
+                
+                <section class="flex gap-6 mb-6">
+                    <div class="card flex-1 bg-gradient text-white" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+                        <div class="flex justify-between">
+                            <div>
+                                <div class="text-sm opacity-80">Total Trade Volume</div>
+                                <div class="text-2xl font-bold mt-1">USD 1.2 Trillion</div>
+                            </div>
+                            <div class="text-right">
+                                <span class="bg-primary px-2 py-1 rounded text-xs">Live</span>
+                            </div>
+                        </div>
+                         <div class="mt-8 flex justify-center">
+                            <i class="ri-earth-line" style="font-size: 6rem; opacity: 0.2;"></i>
+                         </div>
+                    </div>
+                </section>
+
+                <div class="flex gap-6">
+                    <div class="card flex-2">
+                        <h3 class="font-bold mb-4">Product-Level Import vs. Export (USD Bn)</h3>
+                        <div style="height: 400px;">
+                            <canvas id="tradeChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="card flex-1">
+                        <h3 class="font-bold mb-4">MSME Sector Contribution</h3>
+                        <div style="height: 300px; display:flex; justify-content:center;">
+                             <canvas id="msmeChart"></canvas>
+                        </div>
+                        <ul class="text-sm mt-4 space-y-2">
+                            <li class="flex justify-between"><span>GDP Contribution</span> <b>30%</b></li>
+                            <li class="flex justify-between"><span>Employment</span> <b>110 Million</b></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { exportData } from './js/services/mockData.js';
+        import './js/script.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Trade Chart (Bar)
+            new Chart(document.getElementById('tradeChart'), {
+                type: 'bar',
+                data: {
+                    labels: exportData.categories,
+                    datasets: [
+                        { label: 'Imports', data: exportData.imports, backgroundColor: '#f97316' }, // Orange
+                        { label: 'Exports', data: exportData.exports, backgroundColor: '#06b6d4' }  // Cyan
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+            });
+
+            // MSME Chart (Doughnut)
+            new Chart(document.getElementById('msmeChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Service', 'Manufacturing'],
+                    datasets: [{
+                        data: [55, 45],
+                        backgroundColor: ['#8b5cf6', '#6366f1']
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+            });
+        });
+    </script>
+</body>
+</html>

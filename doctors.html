@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zintel - Doctors & Geek Workers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container flex">
+        <aside class="sidebar">
+            <div class="logo-area"><div class="logo-box flex items-center gap-2"><div class="logo-icon bg-primary text-white">Z</div><span class="logo-text font-bold text-lg">ZINTEL</span></div></div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item"><i class="ri-dashboard-line"></i><span>Homepage</span></a>
+                <a href="population.html" class="nav-item"><i class="ri-bar-chart-grouped-line"></i><span>Population & Migration</span></a>
+                <a href="government.html" class="nav-item"><i class="ri-government-line"></i><span>Government & Finance</span></a>
+                <a href="economy.html" class="nav-item"><i class="ri-money-dollar-circle-line"></i><span>Citizen Economy</span></a>
+                <a href="export.html" class="nav-item"><i class="ri-global-line"></i><span>Export-Import & Industry</span></a>
+                <a href="doctors.html" class="nav-item active"><i class="ri-stethoscope-line"></i><span>Doctors & Geek Workers</span></a>
+                <a href="environment.html" class="nav-item"><i class="ri-leaf-line"></i><span>Environment & Climate</span></a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header flex items-center justify-between">
+                <div class="header-left flex items-center gap-4">
+                    <button class="mobile-toggle btn"><i class="ri-menu-2-line"></i></button>
+                    <h2 class="font-bold text-xl">Doctors & Geek Workers Dashboard</h2>
+                </div>
+            </header>
+
+            <div class="dashboard-content container">
+                
+                <div class="flex gap-6 mb-6">
+                    <!-- Salary Chart -->
+                    <div class="card flex-1">
+                        <h3 class="font-bold mb-4">Doctor Salary by State (₹ Millions/yr)</h3>
+                        <div style="height: 300px;">
+                            <canvas id="salaryChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Tech Salary Index -->
+                    <div class="card flex-1">
+                        <h3 class="font-bold mb-4">IT & Data Worker Salary Index</h3>
+                        <div style="height: 300px;">
+                            <canvas id="indexChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-6">
+                    <div class="card flex-1">
+                        <h3 class="font-bold mb-4">Skill Demand vs. Salary</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left">
+                                <thead class="border-b" style="border-color:#e2e8f0;">
+                                    <tr><th class="pb-2">Skill</th><th class="pb-2">Demand</th><th class="pb-2">Salary</th></tr>
+                                </thead>
+                                <tbody id="skillTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { doctorsData } from './js/services/mockData.js';
+        import './js/script.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Salary Chart
+            new Chart(document.getElementById('salaryChart'), {
+                type: 'bar',
+                data: {
+                    labels: doctorsData.salaryByState.map(d => d.state),
+                    datasets: [{
+                        label: 'Avg Salary',
+                        data: doctorsData.salaryByState.map(d => d.salary),
+                        backgroundColor: '#4f46e5',
+                        borderRadius: 4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // Index Chart
+            new Chart(document.getElementById('indexChart'), {
+                type: 'line',
+                data: {
+                    labels: doctorsData.salaryIndex.years,
+                    datasets: [{
+                        label: 'Salary Index (Base 100)',
+                        data: doctorsData.salaryIndex.index,
+                        borderColor: '#10b981',
+                        tension: 0.4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // Skill Table
+            const tbody = document.getElementById('skillTableBody');
+            doctorsData.skillHeatmap.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="py-3 font-medium">${item.skill}</td>
+                    <td class="py-3 text-primary font-bold">${item.demand}</td>
+                    <td class="py-3 text-muted">${item.salary}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        });
+    </script>
+</body>
+</html>
