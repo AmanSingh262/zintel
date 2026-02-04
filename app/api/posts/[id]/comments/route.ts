@@ -101,11 +101,14 @@ export async function POST(
 
         // AI Moderation
         console.log("[Comment Moderation] Checking content:", content.substring(0, 50));
-        let moderationResult = { isClean: true, reason: "" };
+        let moderationResult: { isClean: boolean; reason: string } = { isClean: true, reason: "" };
 
         try {
             const result = await moderateContent(content);
-            moderationResult = result;
+            moderationResult = {
+                isClean: result.isClean,
+                reason: result.reason || ""
+            };
         } catch (modError) {
             console.error("Moderation error, allowing comment:", modError);
             // Fail open logic
