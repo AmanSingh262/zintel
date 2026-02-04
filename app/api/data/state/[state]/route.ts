@@ -1,6 +1,7 @@
 /**
  * State-Specific Data API
  * GET /api/data/state/[state]
+ * Returns data for a specific Indian state
  */
 
 import { NextRequest, NextResponse } from 'next/server';
