@@ -1,0 +1,5 @@
+# This file is only here to satisfy Render's incorrect Python environment detection.
+# If you are deploying the Zintel Frontend, PLEASE CHANGE YOUR RENDER SERVICE ENVIRONMENT TO "NODE".
+# Go to Render Dashboard -> Settings -> Build & Deploy -> Environment -> Select "Node".
+#
+# If you are deploying a Python Backend, please check your Build Command.
