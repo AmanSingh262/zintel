@@ -1,0 +1,5 @@
+# This is a Next.js project (Node.js)
+# Python dependencies are in subdirectories:
+# - llm model/requirements.txt (for LLM backend)
+# - budget_pipeline/requirements.txt (for data pipeline)
+# This file exists only to prevent build detection issues
