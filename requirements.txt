@@ -1,9 +1,0 @@
-# IMPORTANT: This is a Next.js/Node.js project
-# This file should NOT be used for building the main application
-# 
-# Python backends are in subdirectories with their own requirements:
-# - llm model/requirements.txt (LLM backend service)
-# - budget_pipeline/requirements.txt (data pipeline)
-#
-# If Render is reading this file, the build detection is incorrect.
-# The main app uses package.json for Node.js dependencies.
