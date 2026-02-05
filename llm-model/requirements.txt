@@ -1,7 +1,8 @@
 fastapi
 uvicorn
 feedparser
-google-generativeai
+google-genai
 pillow
 requests
 beautifulsoup4
+python-multipart

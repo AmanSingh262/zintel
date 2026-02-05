@@ -3,7 +3,7 @@ import os
 import re
 
 try:
-    import google.generativeai as genai
+    from google import genai
     GEMINI_AVAILABLE = True
 except (ImportError, OSError):
     print("Warning: Google Generative AI not available. AI features will be disabled.")
@@ -64,13 +64,19 @@ def verify_from_image(image_path):
         if not api_key:
             return {"error": "GOOGLE_GEMINI_API_KEY not configured"}
             
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        client = genai.Client(api_key=api_key)
+        model = 'gemini-1.5-flash'
         
         # Open and analyze image
         img = Image.open(image_path)
         prompt = "Extract all text from this image. Focus on headlines and main content."
-        response = model.generate_content([prompt, img])
+        
+        # Upload image and generate content with new API
+        with open(image_path, 'rb') as f:
+            response = client.models.generate_content(
+                model=model,
+                contents=[prompt, {"mime_type": "image/jpeg", "data": f.read()}]
+            )
         extracted_text = response.text.strip()
         
         print(f"Extracted Text: {extracted_text}")
