@@ -3,38 +3,29 @@ import os
 import re
 
 try:
-    import easyocr
-    EASYOCR_AVAILABLE = True
+    import google.generativeai as genai
+    GEMINI_AVAILABLE = True
 except (ImportError, OSError):
-    print("Warning: EasyOCR not available. OCR features will be disabled.")
-    EASYOCR_AVAILABLE = False
-    
-try:
-    from backend.detector import NewsDetector
-except ModuleNotFoundError:
-    try:
-        from detector import NewsDetector
-    except ModuleNotFoundError:
-         # Fallback if running script directly from root
-         try:
-             import sys
-             sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-             from backend.detector import NewsDetector
-         except:
-             print("Could not import NewsDetector")
-             NewsDetector = None
+    print("Warning: Google Generative AI not available. AI features will be disabled.")
+    GEMINI_AVAILABLE = False
 
-# Initialize components
-if EASYOCR_AVAILABLE:
-    try:
-        reader = easyocr.Reader(['en'])
-    except Exception as e:
-        print(f"Failed to init EasyOCR: {e}")
-        reader = None
-else:
-    reader = None
+# Lazy initialization - don't load on startup
+_news_detector = None
 
-news_detector = NewsDetector() if NewsDetector is not None else None
+def get_news_detector():
+    """Lazy load news detector only when needed"""
+    global _news_detector
+    if _news_detector is None and GEMINI_AVAILABLE:
+        try:
+            from backend.detector import NewsDetector
+        except ModuleNotFoundError:
+            try:
+                from detector import NewsDetector
+            except ModuleNotFoundError:
+                print("Could not import NewsDetector")
+                return None
+        _news_detector = NewsDetector()
+    return _news_detector
 
 # Path to the fetched news database
 NEWS_DB_PATH = os.path.join(os.path.dirname(__file__), '../scripts/news_data.json')
@@ -55,43 +46,65 @@ def clean_extracted_text(text_list):
     return full_text.strip()
 
 def verify_from_image(image_path):
+    """
+    Simplified verification using Gemini Vision API instead of EasyOCR.
+    This avoids memory-heavy model downloads.
+    """
     print(f"Processing image: {image_path}")
     
-    if reader is None:
-        return {"error": "OCR system is unavailable on this server."}
+    if not GEMINI_AVAILABLE:
+        return {"error": "AI vision system is unavailable. Please set GOOGLE_GEMINI_API_KEY environment variable."}
 
-    # 1. Read text from image
-    result = reader.readtext(image_path, detail=0)
-    
-    if not result:
-        return {"error": "No text detected in image"}
+    try:
+        # Use Gemini Vision to extract text from image
+        from PIL import Image
         
-    extracted_text = clean_extracted_text(result)
-    print(f"Extracted Text: {extracted_text}")
-    
-    # 2. Cross-reference with news database
-    news_db = load_news_db()
-    db_match = None
-    
-    # Simple check: is the extracted text (or part of it) in any stored title?
-    # In a real app, use fuzzy matching (Levenshtein distance)
-    for article in news_db:
-        if article["title"] in extracted_text or extracted_text in article["title"]:
-            db_match = article
-            break
+        # Configure Gemini
+        api_key = os.environ.get("GOOGLE_GEMINI_API_KEY")
+        if not api_key:
+            return {"error": "GOOGLE_GEMINI_API_KEY not configured"}
             
-    # 3. AI Detection
-    if news_detector is not None:
-        ai_analysis = news_detector.predict_article(extracted_text)
-        is_fake_news = news_detector.is_fake(extracted_text)
-    else:
-        ai_analysis = {"error": "AI detection not available"}
-        is_fake_news = False
-    
-    return {
-        "extracted_text": extracted_text,
-        "database_match": db_match, # If found, it's likely verified real news
-        "ai_analysis": ai_analysis,
-        "overall_prediction": "FAKE" if is_fake_news else "REAL",
-        "verified_source": db_match is not None
-    }
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        
+        # Open and analyze image
+        img = Image.open(image_path)
+        prompt = "Extract all text from this image. Focus on headlines and main content."
+        response = model.generate_content([prompt, img])
+        extracted_text = response.text.strip()
+        
+        print(f"Extracted Text: {extracted_text}")
+        
+        if not extracted_text:
+            return {"error": "No text detected in image"}
+        
+        # 2. Cross-reference with news database
+        news_db = load_news_db()
+        db_match = None
+        
+        # Simple check: is the extracted text (or part of it) in any stored title?
+        for article in news_db:
+            if article["title"] in extracted_text or extracted_text in article["title"]:
+                db_match = article
+                break
+                
+        # 3. AI Detection (lazy load)
+        news_detector = get_news_detector()
+        if news_detector is not None:
+            ai_analysis = news_detector.predict_article(extracted_text)
+            is_fake_news = news_detector.is_fake(extracted_text)
+        else:
+            ai_analysis = {"error": "AI detection not available"}
+            is_fake_news = False
+        
+        return {
+            "extracted_text": extracted_text,
+            "database_match": db_match,
+            "ai_analysis": ai_analysis,
+            "overall_prediction": "FAKE" if is_fake_news else "REAL",
+            "verified_source": db_match is not None
+        }
+        
+    except Exception as e:
+        print(f"Error processing image: {e}")
+        return {"error": f"Image processing failed: {str(e)}"}

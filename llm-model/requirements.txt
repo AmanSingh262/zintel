@@ -1,9 +1,7 @@
 fastapi
 uvicorn
 feedparser
-transformers
-torch
-easyocr
-beautifulsoup4
-nltk
+google-generativeai
+pillow
 requests
+beautifulsoup4

@@ -5,9 +5,13 @@ import os
 import json
 # Import the services we created
 try:
-    from .ocr_service import verify_from_image, news_detector
+    from .ocr_service import verify_from_image, get_news_detector
 except ImportError:
-    from ocr_service import verify_from_image, news_detector
+    from ocr_service import verify_from_image, get_news_detector
+
+# Lazy load news detector
+def get_detector():
+    return get_news_detector()
 
 app = FastAPI()
 
@@ -83,7 +87,10 @@ async def verify_ocr_endpoint(file: UploadFile = File(...)):
 @app.post("/predict")
 def predict_news(text: str = ""):
     """Direct text prediction endpoint."""
-    return news_detector.predict_article(text)
+    detector = get_detector()
+    if detector is None:
+        return {"error": "News detector not available. Please configure GOOGLE_GEMINI_API_KEY."}
+    return detector.predict_article(text)
 
 if __name__ == "__main__":
     import uvicorn
