@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+feedparser
+transformers
+torch
+easyocr
+beautifulsoup4
+nltk
+requests
