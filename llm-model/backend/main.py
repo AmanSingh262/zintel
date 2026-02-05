@@ -4,7 +4,10 @@ import shutil
 import os
 import json
 # Import the services we created
-from ocr_service import verify_from_image, news_detector
+try:
+    from .ocr_service import verify_from_image, news_detector
+except ImportError:
+    from ocr_service import verify_from_image, news_detector
 
 app = FastAPI()
 
